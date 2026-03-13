@@ -7,624 +7,369 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,500;0,700;1,400&family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --gold:       #FFD440;
-  --gold2:      #FFA500;
-  --gold3:      #FFEC80;
-  --gold-glow:  rgba(255,212,64,0.5);
-  --amber:      #FF8C00;
-  --white:      #FFFFFF;
-  --off-white:  #F0ECD8;
-  --bg:         #0A0A06;
-  --bg2:        #111108;
-  --bg3:        #1A1A0F;
-  --panel:      #141410;
-  --red:        #FF4444;
-  --green:      #39FF14;
-  --blue-hud:   #00CFFF;
+  --gold:#FFD440;--gold2:#FFA500;--gold3:#FFEC80;
+  --amber:#FF8C00;--white:#FFF;--bg:#0A0A06;--bg2:#111108;
+  --panel:#141410;--red:#FF4444;--green:#39FF14;--blue:#00CFFF;
+  --f-d:'Bebas Neue',sans-serif;--f-o:'Orbitron',sans-serif;--f-b:'Barlow Condensed',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%;height:-webkit-fill-available}
+body{height:100%;height:-webkit-fill-available;min-height:100dvh;background:var(--bg);font-family:var(--f-b);overflow:hidden;touch-action:manipulation}
+body::after{content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px)}
 
-  --f-display:  'Bebas Neue', sans-serif;
-  --f-digital:  'Orbitron', sans-serif;
-  --f-body:     'Barlow Condensed', sans-serif;
-}
+@keyframes pulse-gold{0%,100%{text-shadow:0 0 10px var(--gold),0 0 30px rgba(255,212,64,.5)}50%{text-shadow:0 0 20px var(--gold),0 0 60px rgba(255,212,64,.8)}}
+@keyframes glow-ring{0%,100%{box-shadow:0 0 0 2px rgba(255,212,64,.4),0 0 20px rgba(255,212,64,.2)}50%{box-shadow:0 0 0 3px rgba(255,212,64,.8),0 0 40px rgba(255,212,64,.5)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes slide-up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes dot-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.6);opacity:.4}}
+@keyframes hud-scan{0%{transform:translateY(-100%);opacity:.7}100%{transform:translateY(800%);opacity:0}}
+@keyframes boot-in{0%{opacity:0;transform:scale(.8)}60%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+@keyframes msg-appear{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes ring-expand{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(2.5)}}
+@keyframes foil-shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes card-deal{0%{opacity:0;transform:translateY(40px) scale(.9) rotate(-3deg)}100%{opacity:1;transform:none}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+.gold-foil{background:linear-gradient(115deg,#8B5E00 0%,#C8860A 15%,#D4AF37 25%,#FFE566 38%,#FFF9C0 48%,#FFE566 58%,#D4AF37 70%,#C8860A 82%,#FFE566 95%,#FFF9C0 100%);background-size:250% 250%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:foil-shimmer 4s ease-in-out infinite}
+.gold-foil-bg{background:linear-gradient(115deg,#8B5E00 0%,#C8860A 15%,#D4AF37 30%,#FFE566 48%,#FFF9C0 55%,#FFE566 62%,#D4AF37 75%,#C8860A 88%,#FFE566 100%);background-size:250% 250%;animation:foil-shimmer 4s ease-in-out infinite}
 
-html {
-  height: 100%;
-  height: -webkit-fill-available;
-}
-body {
-  height: 100%;
-  height: -webkit-fill-available;
-  min-height: 100dvh;
-  background: var(--bg);
-  font-family: var(--f-body);
-  overflow: hidden;
-  touch-action: manipulation;
-}
-
-/* ══ ANIMATIONS ══ */
-@keyframes pulse-gold {
-  0%,100%{ text-shadow: 0 0 10px var(--gold), 0 0 30px rgba(255,212,64,0.5); }
-  50%    { text-shadow: 0 0 20px var(--gold), 0 0 60px rgba(255,212,64,0.8), 0 0 90px rgba(255,212,64,0.4); }
-}
-@keyframes glow-ring {
-  0%,100%{ box-shadow: 0 0 0 2px rgba(255,212,64,0.4), 0 0 20px rgba(255,212,64,0.2); }
-  50%    { box-shadow: 0 0 0 3px rgba(255,212,64,0.8), 0 0 40px rgba(255,212,64,0.5); }
-}
-@keyframes spin-slow { to { transform: rotate(360deg); } }
-@keyframes rev-needle {
-  0%   { transform: rotate(-120deg); }
-  60%  { transform: rotate(80deg); }
-  80%  { transform: rotate(60deg); }
-  100% { transform: rotate(70deg); }
-}
-@keyframes shimmer {
-  0%  { background-position: -200% center; }
-  100%{ background-position:  200% center; }
-}
-@keyframes slide-up { from{ opacity:0; transform:translateY(20px); } to{ opacity:1; transform:none; } }
-@keyframes slide-in { from{ opacity:0; transform:translateX(30px); } to{ opacity:1; transform:none; } }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-@keyframes dot-pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(0.6);opacity:0.4} }
-@keyframes hud-scan {
-  0%   { transform: translateY(-100%); opacity: 0.7; }
-  100% { transform: translateY(800%); opacity: 0; }
-}
-@keyframes boot-in {
-  0%  { opacity:0; transform: scale(0.8); }
-  60% { opacity:1; transform: scale(1.04); }
-  100%{ opacity:1; transform: scale(1); }
-}
-@keyframes msg-appear {
-  from{ opacity:0; transform:translateY(10px) scale(0.97); }
-  to{ opacity:1; transform:none; }
-}
-@keyframes ring-expand {
-  0%  { opacity:0.8; transform:scale(1); }
-  100%{ opacity:0; transform:scale(2.5); }
-}
-@keyframes foil-shimmer {
-  0%  {background-position:0% 50%}
-  50% {background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-.gold-foil {
-  background: linear-gradient(115deg,#8B5E00 0%,#C8860A 15%,#D4AF37 25%,#FFE566 38%,#FFF9C0 48%,#FFE566 58%,#D4AF37 70%,#C8860A 82%,#FFE566 95%,#FFF9C0 100%);
-  background-size:250% 250%;
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  animation: foil-shimmer 4s ease-in-out infinite;
-}
-.gold-foil-bg {
-  background: linear-gradient(115deg,#8B5E00 0%,#C8860A 15%,#D4AF37 30%,#FFE566 48%,#FFF9C0 55%,#FFE566 62%,#D4AF37 75%,#C8860A 88%,#FFE566 100%);
-  background-size:250% 250%;
-  animation: foil-shimmer 4s ease-in-out infinite;
-}
-
-/* ══ SCANLINE OVERLAY ══ */
-body::after {
-  content:''; position:fixed; inset:0; z-index:9990; pointer-events:none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px);
-}
-
-/* ══ OUTER SHELL ══ */
-#shell {
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  min-height: -webkit-fill-available;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
+/* ── SHELL ── */
+#shell{width:100vw;height:100vh;height:100dvh;min-height:-webkit-fill-available;display:flex;flex-direction:column;position:relative;overflow:hidden}
 
 /* ── STATUS BAR ── */
-#statusBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 16px;
-  padding-top: calc(6px + env(safe-area-inset-top, 0px));
-  background: #050503;
-  border-bottom: 1px solid rgba(255,212,64,0.20);
-  flex-shrink: 0;
-  z-index: 10;
-}
-.sb-left { display:flex; align-items:center; gap:8px; }
-.sb-brand { font-family:var(--f-display); font-size:1.1rem; letter-spacing:5px; color:var(--gold); text-shadow: 0 0 12px rgba(255,212,64,0.7); }
-.sb-dot { width:7px; height:7px; border-radius:50%; }
-.sb-green { background:var(--green); box-shadow:0 0 6px var(--green); animation: dot-pulse 2s ease-in-out infinite; }
-.sb-right { display:flex; align-items:center; gap:10px; }
-.sb-time { font-family:var(--f-digital); font-size:0.65rem; color:var(--gold); letter-spacing:2px; }
-.sb-signal { font-family:var(--f-digital); font-size:0.5rem; color:rgba(255,212,64,0.55); letter-spacing:1px; }
+#statusBar{display:flex;justify-content:space-between;align-items:center;padding:6px 16px;padding-top:calc(6px + env(safe-area-inset-top,0px));background:#050503;border-bottom:1px solid rgba(255,212,64,.2);flex-shrink:0;z-index:10}
+.sb-brand{font-family:var(--f-d);font-size:1.1rem;letter-spacing:5px;color:var(--gold);text-shadow:0 0 12px rgba(255,212,64,.7)}
+.sb-left{display:flex;align-items:center;gap:8px}
+.sb-dot{width:7px;height:7px;border-radius:50%}
+.sb-green{background:var(--green);box-shadow:0 0 6px var(--green);animation:dot-pulse 2s ease-in-out infinite}
+.sb-right{display:flex;align-items:center;gap:10px}
+.sb-time{font-family:var(--f-o);font-size:.65rem;color:var(--gold);letter-spacing:2px}
+.sb-sig{font-family:var(--f-o);font-size:.5rem;color:rgba(255,212,64,.55);letter-spacing:1px}
 
-/* ── SCREEN AREA ── */
-#screen {
-  flex: 1;
-  min-height: 0;
-  position: relative;
-  overflow: hidden;
-}
+/* ── SCREEN ── */
+#screen{flex:1;min-height:0;position:relative;overflow:hidden}
 
 /* ── BOTTOM NAV ── */
-#bottomNav {
-  display: flex;
-  background: #060604;
-  border-top: 2px solid rgba(255,212,64,0.25);
-  flex-shrink: 0;
-  z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  position: relative;
-}
-.bnav-btn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 4px 12px;
-  background: transparent;
-  border: none;
-  border-right: 1px solid rgba(255,212,64,0.06);
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  gap: 4px;
-}
-.bnav-btn:last-child { border-right:none; }
-.bnav-btn.active {
-  background: rgba(255,212,64,0.06);
-}
-.bnav-btn.active::before {
-  content:'';
-  position:absolute; top:0; left:20%; right:20%; height:2px;
-  background: var(--gold);
-  box-shadow: 0 0 8px var(--gold);
-}
-.bnav-icon { font-size:1.3rem; transition:transform 0.2s; }
-.bnav-btn.active .bnav-icon { transform:scale(1.1); }
-.bnav-label {
-  font-family:var(--f-display);
-  font-size:0.6rem;
-  letter-spacing:2px;
-  color:rgba(255,255,255,0.28);
-  transition:color 0.2s;
-}
-.bnav-btn.active .bnav-label { color:var(--gold); text-shadow:0 0 8px rgba(255,212,64,0.4); }
+#bottomNav{display:flex;background:#060604;border-top:2px solid rgba(255,212,64,.25);flex-shrink:0;z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);position:relative}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 12px;background:transparent;border:none;border-right:1px solid rgba(255,212,64,.06);cursor:pointer;transition:all .2s;position:relative;gap:4px}
+.bnav-btn:last-child{border-right:none}
+.bnav-btn.active{background:rgba(255,212,64,.06)}
+.bnav-btn.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.bnav-icon{font-size:1.3rem;transition:transform .2s}
+.bnav-btn.active .bnav-icon{transform:scale(1.1)}
+.bnav-label{font-family:var(--f-d);font-size:.6rem;letter-spacing:2px;color:rgba(255,255,255,.28);transition:color .2s}
+.bnav-btn.active .bnav-label{color:var(--gold);text-shadow:0 0 8px rgba(255,212,64,.4)}
 
-/* ══════════════════════════════
-   BOOT SCREEN
-══════════════════════════════ */
-#bootScreen {
-  position: absolute; inset:0;
-  background: var(--bg);
-  display: flex; flex-direction:column; align-items:center; justify-content:center;
-  z-index:200;
-}
-.boot-grid {
-  position:absolute; inset:0; pointer-events:none;
-  background-image:
-    linear-gradient(rgba(255,212,64,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,212,64,0.05) 1px, transparent 1px);
-  background-size:50px 50px;
-}
-.boot-hud-scan {
-  position:absolute; top:0; left:0; right:0; height:60px;
-  background: linear-gradient(180deg, rgba(255,212,64,0.12) 0%, transparent 100%);
-  animation: hud-scan 2.5s linear infinite;
-  pointer-events:none;
-}
-.boot-logo { font-family:var(--f-display); font-size:clamp(5rem,20vw,8rem); letter-spacing:14px; color:var(--gold); text-shadow:0 0 30px rgba(255,212,64,0.8), 0 0 80px rgba(255,212,64,0.4); animation:boot-in 0.8s cubic-bezier(0.22,1,0.36,1) both, pulse-gold 2s ease-in-out 0.8s infinite; }
-.boot-sub { font-family:var(--f-digital); font-size:clamp(0.5rem,1.8vw,0.7rem); letter-spacing:6px; color:rgba(255,212,64,0.6); margin-top:0.5rem; margin-bottom:2.5rem; }
-.boot-bar-wrap { width:min(280px,75%); height:3px; background:rgba(255,212,64,0.10); border-radius:2px; overflow:hidden; }
-.boot-bar-fill { height:100%; width:0%; transition:width 0.4s ease; background:linear-gradient(90deg,var(--amber),var(--gold),var(--gold3)); box-shadow:0 0 10px rgba(255,212,64,0.7); }
-.boot-status { font-family:var(--f-digital); font-size:0.58rem; letter-spacing:3px; color:rgba(255,255,255,0.35); margin-top:0.9rem; }
+/* ── BOOT ── */
+#bootScreen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200}
+.boot-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,212,64,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,212,64,.05) 1px,transparent 1px);background-size:50px 50px}
+.boot-hud-scan{position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(180deg,rgba(255,212,64,.12) 0%,transparent 100%);animation:hud-scan 2.5s linear infinite;pointer-events:none}
+.boot-logo{font-family:var(--f-d);font-size:clamp(5rem,20vw,8rem);letter-spacing:14px;color:var(--gold);text-shadow:0 0 30px rgba(255,212,64,.8),0 0 80px rgba(255,212,64,.4);animation:boot-in .8s cubic-bezier(.22,1,.36,1) both,pulse-gold 2s ease-in-out .8s infinite}
+.boot-sub{font-family:var(--f-o);font-size:clamp(.5rem,1.8vw,.7rem);letter-spacing:6px;color:rgba(255,212,64,.6);margin-top:.5rem;margin-bottom:2.5rem}
+.boot-bar-wrap{width:min(280px,75%);height:3px;background:rgba(255,212,64,.1);border-radius:2px;overflow:hidden}
+.boot-bar-fill{height:100%;width:0%;transition:width .4s ease;background:linear-gradient(90deg,var(--amber),var(--gold),var(--gold3));box-shadow:0 0 10px rgba(255,212,64,.7)}
+.boot-status{font-family:var(--f-o);font-size:.58rem;letter-spacing:3px;color:rgba(255,255,255,.35);margin-top:.9rem}
 
-/* ══════════════════════════════
-   PANELS (swappable views)
-══════════════════════════════ */
-.view-panel {
-  position:absolute; inset:0;
-  display:none;
-  overflow-y:auto;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  scroll-behavior:smooth;
-}
-.view-panel.active { display:flex; flex-direction:column; animation:slide-up 0.3s ease; }
+/* ── VIEW PANELS ── */
+.view-panel{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.view-panel.active{display:flex;animation:slide-up .3s ease}
+.view-panel::-webkit-scrollbar{width:2px}
+.view-panel::-webkit-scrollbar-thumb{background:rgba(255,212,64,.3)}
 
-/* scrollbar */
-.view-panel::-webkit-scrollbar { width:2px; }
-.view-panel::-webkit-scrollbar-thumb { background:rgba(255,212,64,0.3); }
+/* ── PANEL HEADERS ── */
+.panel-hdr{padding:16px;border-bottom:1px solid rgba(255,212,64,.12);background:linear-gradient(180deg,#0D0D08,var(--bg));flex-shrink:0}
+.panel-title-sm{font-family:var(--f-o);font-size:.52rem;letter-spacing:5px;color:rgba(255,212,64,.5);margin-bottom:4px}
+.panel-title{font-family:var(--f-d);font-size:2.2rem;letter-spacing:5px;color:var(--white);line-height:1}
+.panel-title span{color:var(--gold);text-shadow:0 0 12px rgba(255,212,64,.5)}
 
-/* ══ PANEL: HOME ══ */
-#homePanel {
-  background: var(--bg);
-  align-items: stretch;
-}
+/* ── SECTION HEADER ── */
+.section-hdr{font-family:var(--f-o);font-size:.52rem;letter-spacing:4px;color:rgba(255,212,64,.55);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.section-hdr::after{content:'';flex:1;height:1px;background:rgba(255,212,64,.15)}
 
-/* ─ GAUGE CLUSTER ─ */
-.gauge-cluster {
-  display:grid;
-  grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: auto;
-  gap:0;
-  padding: 16px 12px 10px;
-  background: linear-gradient(180deg, #0D0D08 0%, var(--bg) 100%);
-  border-bottom: 1px solid rgba(255,212,64,0.12);
-  align-items: center;
-}
+/* ═══════════════════════════
+   HOME PANEL
+═══════════════════════════ */
+#homePanel{background:var(--bg);align-items:stretch}
 
-/* left stats */
-.cluster-left, .cluster-right {
-  display:flex; flex-direction:column; gap:10px;
-}
-.cluster-right { align-items:flex-end; }
+.gauge-cluster{display:grid;grid-template-columns:1fr auto 1fr;gap:0;padding:16px 12px 10px;background:linear-gradient(180deg,#0D0D08 0%,var(--bg) 100%);border-bottom:1px solid rgba(255,212,64,.12);align-items:center}
+.cluster-left,.cluster-right{display:flex;flex-direction:column;gap:10px}
+.cluster-right{align-items:flex-end}
+.stat-box{background:rgba(255,212,64,.04);border:1px solid rgba(255,212,64,.15);padding:8px 12px;min-width:90px}
+.stat-box.a{border-color:rgba(255,212,64,.4);background:rgba(255,212,64,.07)}
+.stat-label{font-family:var(--f-o);font-size:.45rem;letter-spacing:3px;color:rgba(255,212,64,.55);margin-bottom:3px}
+.stat-val{font-family:var(--f-d);font-size:1.5rem;letter-spacing:3px;color:var(--white);line-height:1}
+.stat-val.g{color:var(--gold);text-shadow:0 0 10px rgba(255,212,64,.5)}
+.stat-sub{font-family:var(--f-o);font-size:.4rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:2px}
 
-.stat-box {
-  background: rgba(255,212,64,0.04);
-  border: 1px solid rgba(255,212,64,0.15);
-  padding: 8px 12px;
-  min-width: 90px;
-}
-.stat-box.active-stat {
-  border-color: rgba(255,212,64,0.4);
-  background: rgba(255,212,64,0.07);
-}
-.stat-label { font-family:var(--f-digital); font-size:0.45rem; letter-spacing:3px; color:rgba(255,212,64,0.55); margin-bottom:3px; }
-.stat-val   { font-family:var(--f-display); font-size:1.5rem; letter-spacing:3px; color:var(--white); line-height:1; }
-.stat-val.gold { color:var(--gold); text-shadow:0 0 10px rgba(255,212,64,0.5); }
-.stat-sub   { font-family:var(--f-digital); font-size:0.4rem; letter-spacing:2px; color:rgba(255,255,255,0.3); margin-top:2px; }
+.speedo-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px}
+.speedo-ring{width:clamp(130px,36vw,165px);height:clamp(130px,36vw,165px);border-radius:50%;border:3px solid rgba(255,212,64,.2);background:radial-gradient(circle at center,#1A1A0A 0%,#0A0A04 70%);box-shadow:0 0 0 1px rgba(255,212,64,.08),0 0 30px rgba(255,212,64,.12),inset 0 0 30px rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;animation:glow-ring 3s ease-in-out infinite}
+.speedo-ring::before{content:'';position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(255,212,64,.1)}
+.speedo-bbl{font-family:var(--f-d);font-size:clamp(2.2rem,8vw,2.8rem);letter-spacing:8px;color:var(--gold);text-shadow:0 0 15px rgba(255,212,64,.8),0 0 40px rgba(255,212,64,.4);animation:pulse-gold 2.5s ease-in-out infinite;line-height:.85}
+.speedo-sub{font-family:var(--f-o);font-size:.4rem;letter-spacing:4px;color:rgba(255,212,64,.6);margin-top:6px}
 
-/* CENTRAL SPEEDOMETER */
-.speedo-wrap {
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding: 0 10px;
-}
-.speedo-ring {
-  width: clamp(130px,36vw,170px);
-  height: clamp(130px,36vw,170px);
-  border-radius:50%;
-  border: 3px solid rgba(255,212,64,0.20);
-  background: radial-gradient(circle at center, #1A1A0A 0%, #0A0A04 70%);
-  box-shadow: 0 0 0 1px rgba(255,212,64,0.08), 0 0 30px rgba(255,212,64,0.12), inset 0 0 30px rgba(0,0,0,0.5);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  position:relative;
-  animation: glow-ring 3s ease-in-out infinite;
-}
-.speedo-ring::before {
-  content:'';
-  position:absolute; inset:6px;
-  border-radius:50%;
-  border: 1px solid rgba(255,212,64,0.10);
-}
-.speedo-bbl { font-family:var(--f-display); font-size:clamp(2.2rem,8vw,3rem); letter-spacing:8px; color:var(--gold); text-shadow:0 0 15px rgba(255,212,64,0.8), 0 0 40px rgba(255,212,64,0.4); animation:pulse-gold 2.5s ease-in-out infinite; line-height:0.85; }
-.speedo-sub { font-family:var(--f-digital); font-size:0.42rem; letter-spacing:4px; color:rgba(255,212,64,0.6); margin-top:4px; }
-.speedo-tag { font-family:var(--f-body); font-style:italic; font-size:0.55rem; letter-spacing:2px; color:rgba(255,255,255,0.4); margin-top:2px; }
+/* TAGLINE STRIP — one place on home, prominent */
+.tagline-strip{text-align:center;padding:8px 16px;background:rgba(255,212,64,.04);border-bottom:1px solid rgba(255,212,64,.10);flex-shrink:0}
+.tagline-strip span{font-family:var(--f-d);font-size:clamp(.85rem,3vw,1rem);letter-spacing:clamp(4px,2vw,8px);color:rgba(255,212,64,.75);text-shadow:0 0 10px rgba(255,212,64,.3)}
 
-/* ─ HERO ACTIONS ROW ─ */
-.hero-actions {
-  display:grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap:1px;
-  background: rgba(255,212,64,0.08);
-  border-bottom: 1px solid rgba(255,212,64,0.12);
-}
-.ha-btn {
-  background: var(--bg);
-  border:none;
-  padding: 14px 8px;
-  cursor:pointer;
-  display:flex; flex-direction:column; align-items:center; gap:4px;
-  transition:all 0.2s;
-  position:relative;
-}
-.ha-btn:active { background: rgba(255,212,64,0.08); }
-.ha-icon { font-size:1.4rem; }
-.ha-label { font-family:var(--f-display); font-size:0.65rem; letter-spacing:2px; color:rgba(255,255,255,0.65); text-align:center; }
-.ha-val   { font-family:var(--f-digital); font-size:0.55rem; color:var(--gold); letter-spacing:1px; }
+.hero-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,212,64,.08);border-bottom:1px solid rgba(255,212,64,.12)}
+.ha-btn{background:var(--bg);border:none;padding:14px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s}
+.ha-btn:active{background:rgba(255,212,64,.08)}
+.ha-icon{font-size:1.4rem}
+.ha-label{font-family:var(--f-d);font-size:.65rem;letter-spacing:2px;color:rgba(255,255,255,.65);text-align:center}
+.ha-val{font-family:var(--f-o);font-size:.55rem;color:var(--gold);letter-spacing:1px}
 
-/* ─ UPCOMING RIDE CARD ─ */
-.next-ride-wrap { padding: 12px; }
-.section-hdr {
-  font-family:var(--f-digital); font-size:0.52rem; letter-spacing:4px; color:rgba(255,212,64,0.55);
-  margin-bottom:8px;
-  display:flex; align-items:center; gap:8px;
-}
-.section-hdr::after { content:''; flex:1; height:1px; background:rgba(255,212,64,0.15); }
-.next-ride-card {
-  background: var(--bg2);
-  border: 1px solid rgba(255,212,64,0.20);
-  padding: 14px;
-  display:flex; gap:12px; align-items:flex-start;
-  cursor:pointer;
-  transition:all 0.2s;
-}
-.next-ride-card:active { background:rgba(255,212,64,0.07); }
-.nrc-date {
-  background: rgba(255,212,64,0.10);
-  border: 1px solid rgba(255,212,64,0.25);
-  padding:6px 8px; text-align:center; flex-shrink:0;
-  min-width:52px;
-}
-.nrc-dd   { font-family:var(--f-display); font-size:1.6rem; color:var(--gold); line-height:1; }
-.nrc-mon  { font-family:var(--f-digital); font-size:0.5rem; letter-spacing:3px; color:rgba(255,212,64,0.6); }
-.nrc-info { flex:1; }
-.nrc-tag  { font-family:var(--f-digital); font-size:0.45rem; letter-spacing:3px; color:var(--amber); margin-bottom:3px; }
-.nrc-name { font-family:var(--f-display); font-size:1.3rem; letter-spacing:3px; color:var(--white); line-height:1.1; }
-.nrc-route{ font-family:var(--f-body); font-size:0.8rem; color:rgba(255,255,255,0.50); margin-top:3px; }
-.nrc-arrow{ font-family:var(--f-display); font-size:1.5rem; color:rgba(255,212,64,0.4); align-self:center; }
+.next-ride-wrap{padding:12px}
+.next-ride-card{background:var(--bg2);border:1px solid rgba(255,212,64,.2);padding:14px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:all .2s}
+.next-ride-card:active{background:rgba(255,212,64,.07)}
+.nrc-date{background:rgba(255,212,64,.1);border:1px solid rgba(255,212,64,.25);padding:6px 8px;text-align:center;flex-shrink:0;min-width:52px}
+.nrc-dd{font-family:var(--f-d);font-size:1.6rem;color:var(--gold);line-height:1}
+.nrc-mon{font-family:var(--f-o);font-size:.5rem;letter-spacing:3px;color:rgba(255,212,64,.6)}
+.nrc-tag{font-family:var(--f-o);font-size:.45rem;letter-spacing:3px;color:var(--amber);margin-bottom:3px}
+.nrc-name{font-family:var(--f-d);font-size:1.3rem;letter-spacing:3px;color:var(--white);line-height:1.1}
+.nrc-route{font-family:var(--f-b);font-size:.8rem;color:rgba(255,255,255,.5);margin-top:3px}
+.nrc-arrow{font-family:var(--f-d);font-size:1.5rem;color:rgba(255,212,64,.4);align-self:center}
 
-/* ─ QUICK STATS ROW ─ */
-.quick-stats {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:1px;
-  background:rgba(255,212,64,0.08);
-  margin: 0 12px;
-  margin-bottom:12px;
-}
-.qs-item {
-  background:var(--bg);
-  padding:12px 8px; text-align:center;
-}
-.qs-val   { font-family:var(--f-display); font-size:1.6rem; letter-spacing:2px; color:var(--gold); text-shadow:0 0 12px rgba(255,212,64,0.4); }
-.qs-label { font-family:var(--f-digital); font-size:0.42rem; letter-spacing:2px; color:rgba(255,255,255,0.30); margin-top:2px; }
+.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,212,64,.08);margin:0 12px 12px}
+.qs-item{background:var(--bg);padding:12px 8px;text-align:center}
+.qs-val{font-family:var(--f-d);font-size:1.6rem;letter-spacing:2px;color:var(--gold);text-shadow:0 0 12px rgba(255,212,64,.4)}
+.qs-label{font-family:var(--f-o);font-size:.42rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:2px}
 
-/* ══ PANEL: PACK ══ */
-#packPanel {
-  background: var(--bg);
-  padding: 0;
-}
-.panel-hdr {
-  padding: 16px;
-  border-bottom: 1px solid rgba(255,212,64,0.12);
-  background: linear-gradient(180deg,#0D0D08,var(--bg));
-}
-.panel-title-sm { font-family:var(--f-digital); font-size:0.52rem; letter-spacing:5px; color:rgba(255,212,64,0.5); margin-bottom:4px; }
-.panel-title    { font-family:var(--f-display); font-size:2.2rem; letter-spacing:5px; color:var(--white); line-height:1; }
-.panel-title span { color:var(--gold); text-shadow:0 0 12px rgba(255,212,64,0.5); }
+.mission-block{margin:0 12px 12px;background:rgba(255,212,64,.04);border:1px solid rgba(255,212,64,.18);border-left:3px solid var(--gold);padding:14px}
+.mission-text{font-family:var(--f-b);font-size:1.05rem;line-height:1.7;color:rgba(255,255,255,.78);letter-spacing:.4px}
+.mission-text em{color:var(--gold);font-family:var(--f-d);font-style:normal;letter-spacing:3px;font-size:1rem}
 
-.members-list { padding:10px 12px; display:flex; flex-direction:column; gap:2px; }
-.member-row {
-  background: var(--bg2);
-  border: 1px solid rgba(255,212,64,0.08);
-  border-left: 3px solid rgba(255,212,64,0.15);
-  padding: 12px 14px;
-  display:flex; gap:10px; align-items:center;
-  transition:all 0.2s;
-  cursor:pointer;
-  position:relative;
-}
-.member-row.chairman { border-left-color: var(--gold); background: rgba(255,212,64,0.04); }
-.member-row:active { background:rgba(255,212,64,0.07); }
-.m-avatar {
-  width:38px; height:38px; border-radius:50%;
-  border:2px solid rgba(255,212,64,0.25);
-  background:rgba(255,212,64,0.06);
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--f-display); font-size:0.85rem; color:var(--gold);
-  flex-shrink:0;
-}
-.member-row.chairman .m-avatar { border-color:var(--gold); box-shadow:0 0 10px rgba(255,212,64,0.3); }
-.m-info { flex:1; min-width:0; }
-.m-badge-row { display:flex; align-items:center; gap:6px; margin-bottom:2px; }
-.m-badge-text { font-family:var(--f-digital); font-size:0.42rem; letter-spacing:2px; color:rgba(255,212,64,0.55); }
-.m-crown { font-size:0.6rem; }
-.m-name  { font-family:var(--f-display); font-size:1.1rem; letter-spacing:3px; color:var(--white); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.m-bike  { font-family:var(--f-body); font-size:0.78rem; color:rgba(255,255,255,0.45); }
-.m-city-tag {
-  font-family:var(--f-digital); font-size:0.4rem; letter-spacing:2px;
-  background:rgba(255,212,64,0.07); border:1px solid rgba(255,212,64,0.15);
-  padding:3px 6px; color:rgba(255,212,64,0.6); flex-shrink:0; align-self:center;
-}
+/* ═══════════════════════════
+   PACK PANEL
+═══════════════════════════ */
+.members-list{padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.member-row{background:var(--bg2);border:1px solid rgba(255,212,64,.08);border-left:3px solid rgba(255,212,64,.15);padding:12px 14px;display:flex;gap:10px;align-items:center;cursor:pointer;position:relative;transition:all .2s}
+.member-row.chairman{border-left-color:var(--gold);background:rgba(255,212,64,.04)}
+.member-row:active{background:rgba(255,212,64,.07)}
+.m-avatar{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,212,64,.25);background:rgba(255,212,64,.06);display:flex;align-items:center;justify-content:center;font-family:var(--f-d);font-size:.85rem;color:var(--gold);flex-shrink:0}
+.member-row.chairman .m-avatar{border-color:var(--gold);box-shadow:0 0 10px rgba(255,212,64,.3)}
+.m-info{flex:1;min-width:0}
+.m-badge-row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.m-badge-text{font-family:var(--f-o);font-size:.42rem;letter-spacing:2px;color:rgba(255,212,64,.55)}
+.m-name{font-family:var(--f-d);font-size:1.1rem;letter-spacing:3px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-bike{font-family:var(--f-b);font-size:.78rem;color:rgba(255,255,255,.45)}
+.m-city-tag{font-family:var(--f-o);font-size:.4rem;letter-spacing:2px;background:rgba(255,212,64,.07);border:1px solid rgba(255,212,64,.15);padding:3px 6px;color:rgba(255,212,64,.6);flex-shrink:0;align-self:center}
 
-/* ══ PANEL: RIDES ══ */
-#ridesPanel { background:var(--bg); }
-.rides-list-mobile { padding:10px 12px; display:flex; flex-direction:column; gap:8px; }
-.ride-card-mobile {
-  background:var(--bg2);
-  border:1px solid rgba(255,212,64,0.12);
-  padding:14px;
-  cursor:pointer;
-  transition:all 0.2s;
-  display:grid;
-  grid-template-columns:60px 1fr auto;
-  gap:12px;
-  align-items:center;
-}
-.ride-card-mobile:active { background:rgba(255,212,64,0.06); }
-.rcm-date {
-  text-align:center;
-  background:rgba(255,212,64,0.06);
-  border:1px solid rgba(255,212,64,0.18);
-  padding:6px 4px;
-}
-.rcm-dd  { font-family:var(--f-display); font-size:1.8rem; color:var(--gold); line-height:1; }
-.rcm-mon { font-family:var(--f-digital); font-size:0.45rem; letter-spacing:2px; color:rgba(255,212,64,0.6); }
-.rcm-yr  { font-family:var(--f-digital); font-size:0.38rem; color:rgba(255,255,255,0.25); }
-.rcm-info { }
-.rcm-tag  { font-family:var(--f-digital); font-size:0.42rem; letter-spacing:3px; color:var(--amber); margin-bottom:4px; }
-.rcm-name { font-family:var(--f-display); font-size:1.15rem; letter-spacing:3px; color:var(--white); line-height:1.1; }
-.rcm-route{ font-family:var(--f-body); font-size:0.78rem; color:rgba(255,255,255,0.45); margin-top:3px; }
-.rcm-arrow{ font-family:var(--f-display); font-size:1.6rem; color:rgba(255,212,64,0.35); }
+/* ═══════════════════════════
+   RIDES PANEL
+═══════════════════════════ */
+.rides-list-mobile{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.ride-card-mobile{background:var(--bg2);border:1px solid rgba(255,212,64,.12);padding:14px;cursor:pointer;transition:all .2s;display:grid;grid-template-columns:60px 1fr auto;gap:12px;align-items:center}
+.ride-card-mobile:active{background:rgba(255,212,64,.06)}
+.rcm-date{text-align:center;background:rgba(255,212,64,.06);border:1px solid rgba(255,212,64,.18);padding:6px 4px}
+.rcm-dd{font-family:var(--f-d);font-size:1.8rem;color:var(--gold);line-height:1}
+.rcm-mon{font-family:var(--f-o);font-size:.45rem;letter-spacing:2px;color:rgba(255,212,64,.6)}
+.rcm-yr{font-family:var(--f-o);font-size:.38rem;color:rgba(255,255,255,.25)}
+.rcm-tag{font-family:var(--f-o);font-size:.42rem;letter-spacing:3px;color:var(--amber);margin-bottom:4px}
+.rcm-name{font-family:var(--f-d);font-size:1.15rem;letter-spacing:3px;color:var(--white);line-height:1.1}
+.rcm-route{font-family:var(--f-b);font-size:.78rem;color:rgba(255,255,255,.45);margin-top:3px}
+.rcm-arrow{font-family:var(--f-d);font-size:1.6rem;color:rgba(255,212,64,.35)}
 
-/* ══ PANEL: MEMBERSHIP ══ */
-#membershipPanel { background:var(--bg); }
-.tier-list { padding:12px; display:flex; flex-direction:column; gap:10px; }
-.tier-mobile {
-  background:var(--bg2);
-  border:1px solid rgba(255,212,64,0.12);
-  padding:16px 14px;
-  cursor:pointer;
-  transition:all 0.2s;
-  position:relative;
-}
-.tier-mobile.tier-pop { border-color:rgba(255,212,64,0.40); background:rgba(255,212,64,0.04); }
-.tier-mobile.tier-alpha { border-color:rgba(255,212,64,0.30); }
-.tier-badge-mob { font-family:var(--f-digital); font-size:0.45rem; letter-spacing:4px; color:rgba(255,212,64,0.5); margin-bottom:4px; }
-.tier-name-mob  { font-family:var(--f-display); font-size:1.5rem; letter-spacing:4px; color:var(--white); margin-bottom:6px; }
-.tier-price-mob { font-family:var(--f-display); font-size:2rem; letter-spacing:2px; color:var(--gold); text-shadow:0 0 12px rgba(255,212,64,0.4); }
-.tier-price-mob span { font-size:0.55em; color:rgba(255,212,64,0.6); }
-.tier-features-mob { margin-top:10px; display:flex; flex-direction:column; gap:4px; }
-.tf-mob { font-family:var(--f-body); font-size:0.85rem; color:rgba(255,255,255,0.60); display:flex; gap:8px; align-items:flex-start; }
-.tf-mob-icon { color:var(--gold); flex-shrink:0; font-size:0.6rem; margin-top:3px; }
-.tier-cta-mob {
-  margin-top:14px; width:100%; padding:12px;
-  border:none; cursor:pointer;
-  font-family:var(--f-display); font-size:1.1rem; letter-spacing:4px;
-  color:#050500; transition:all 0.2s;
-}
-.tier-cta-mob:active { filter:brightness(0.9); transform:scale(0.99); }
-.popular-pill {
-  position:absolute; top:-1px; right:16px;
-  font-family:var(--f-digital); font-size:0.42rem; letter-spacing:3px;
-  background:var(--gold); color:#050500; padding:3px 8px;
-}
+/* ═══════════════════════════
+   MEMBERSHIP PANEL
+═══════════════════════════ */
+.tier-list{padding:12px;display:flex;flex-direction:column;gap:10px}
+.tier-mobile{background:var(--bg2);border:1px solid rgba(255,212,64,.12);padding:16px 14px;position:relative}
+.tier-mobile.tier-active{border-color:rgba(255,212,64,.40);background:rgba(255,212,64,.04)}
+.tier-mobile.tier-cs{opacity:.55;pointer-events:none}
+.tier-badge-mob{font-family:var(--f-o);font-size:.45rem;letter-spacing:4px;color:rgba(255,212,64,.5);margin-bottom:4px}
+.tier-name-mob{font-family:var(--f-d);font-size:1.5rem;letter-spacing:4px;color:var(--white);margin-bottom:6px}
+.tier-price-mob{font-family:var(--f-d);font-size:2rem;letter-spacing:2px;color:var(--gold);text-shadow:0 0 12px rgba(255,212,64,.4)}
+.tier-price-mob span{font-size:.55em;color:rgba(255,212,64,.6)}
+.tier-features-mob{margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.tf-mob{font-family:var(--f-b);font-size:.85rem;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start}
+.tf-mob-icon{color:var(--gold);flex-shrink:0;font-size:.6rem;margin-top:3px}
+.tier-cta-mob{margin-top:14px;width:100%;padding:12px;border:none;cursor:pointer;font-family:var(--f-d);font-size:1.1rem;letter-spacing:4px;color:#050500;transition:all .2s}
+.tier-cta-mob:active{filter:brightness(.9);transform:scale(.99)}
+.popular-pill{position:absolute;top:-1px;right:16px;font-family:var(--f-o);font-size:.42rem;letter-spacing:3px;background:var(--gold);color:#050500;padding:3px 8px}
+.cs-pill{position:absolute;top:-1px;right:16px;font-family:var(--f-o);font-size:.42rem;letter-spacing:3px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12);padding:3px 8px}
 
-/* ══ PANEL: JOIN ══ */
-#joinPanel { background:var(--bg); }
-.join-inner { padding:12px; }
-.join-form { display:flex; flex-direction:column; gap:10px; }
-.fg-m label { display:block; font-family:var(--f-digital); font-size:0.48rem; letter-spacing:3px; color:rgba(255,212,64,0.5); margin-bottom:5px; }
-.fg-m input, .fg-m select {
-  width:100%; background:rgba(255,212,64,0.03); border:1px solid rgba(255,212,64,0.15);
-  padding:12px 14px; color:var(--white); font-family:var(--f-body); font-size:1rem;
-  outline:none; transition:border-color 0.3s; border-radius:0; -webkit-appearance:none;
-}
-.fg-m input:focus,.fg-m select:focus { border-color:var(--gold); box-shadow:0 0 14px rgba(255,212,64,0.12); }
-.fg-m input::placeholder { color:rgba(255,255,255,0.18); }
-.fg-m select option { background:#0C0C0C; }
-.btn-apply-mob {
-  width:100%; padding:14px; border:none; cursor:pointer;
-  font-family:var(--f-display); font-size:1.3rem; letter-spacing:4px;
-  color:#050500; transition:all 0.2s;
-  margin-top:4px;
-}
-.btn-apply-mob:active { filter:brightness(0.9); transform:scale(0.99); }
+/* ═══════════════════════════
+   JOIN WIZARD
+═══════════════════════════ */
+#joinPanel{background:var(--bg)}
+.wizard-prog-wrap{height:3px;background:rgba(255,212,64,.08);flex-shrink:0}
+.wizard-prog-fill{height:100%;width:10%;transition:width .5s ease;background:linear-gradient(90deg,var(--amber),var(--gold),var(--gold3));box-shadow:0 0 8px rgba(255,212,64,.6)}
+.wizard-step-label{padding:8px 16px 0;font-family:var(--f-o);font-size:.5rem;letter-spacing:3px;color:rgba(255,212,64,.5);flex-shrink:0}
 
-/* ─ emulator progress ─ */
-.emul-mob { display:none; margin-top:8px; }
-.emul-mob.active { display:block; animation:slide-up 0.3s ease; }
-.emul-log {
-  background:rgba(0,0,0,0.5); border:1px solid rgba(255,212,64,0.10);
-  padding:10px 12px; height:140px; overflow-y:auto;
-  font-family:var(--f-digital); font-size:0.55rem; line-height:2;
-  color:rgba(255,255,255,0.35); scroll-behavior:smooth;
-}
-.log-done { color:var(--gold); font-weight:700; text-shadow:0 0 8px rgba(255,212,64,0.5); }
-.log-line { animation:slide-up 0.25s ease; }
-.prog-mob-wrap { height:3px; background:rgba(255,212,64,0.08); overflow:hidden; margin:8px 0; }
-.prog-mob-fill { height:100%; width:0%; transition:width 0.5s ease; background:linear-gradient(90deg,var(--amber),var(--gold),var(--gold3)); box-shadow:0 0 8px rgba(255,212,64,0.6); }
+.join-step{display:none;flex-direction:column;padding:14px 14px 20px;flex:1}
+.join-step.active{display:flex;animation:slide-up .25s ease}
+.js-title{font-family:var(--f-d);font-size:1.8rem;letter-spacing:4px;color:var(--white);margin-bottom:4px}
+.js-sub{font-family:var(--f-o);font-size:.5rem;letter-spacing:3px;color:rgba(255,212,64,.5);margin-bottom:16px}
+.js-body{flex:1;display:flex;flex-direction:column;gap:10px}
 
-.card-reveal-mob {
-  margin-top:10px; padding:14px; text-align:center;
-  border:1px solid rgba(255,212,64,0.35); background:rgba(255,212,64,0.04);
-  animation:slide-up 0.5s ease;
-}
-.cr-num-mob  { font-family:var(--f-digital); font-size:0.52rem; letter-spacing:4px; margin-bottom:6px; }
-.cr-name-mob { font-family:var(--f-display); font-size:2rem; letter-spacing:5px; color:var(--white); text-shadow:0 0 15px rgba(255,255,255,0.5); }
-.cr-bike-mob { font-family:var(--f-body); font-size:0.9rem; color:rgba(255,255,255,0.55); }
-.cr-seal-mob { font-family:var(--f-digital); font-size:0.5rem; letter-spacing:5px; margin-top:10px; }
-.cr-tag-mob  { font-family:var(--f-body); font-style:italic; font-size:0.85rem; color:rgba(255,255,255,0.25); letter-spacing:2px; }
-.btn-founder-mob {
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  margin-top:12px; padding:12px; border:none; cursor:pointer;
-  text-decoration:none; font-family:var(--f-display); font-size:1.1rem; letter-spacing:3px;
-  color:#050500; width:100%; transition:all 0.2s;
-}
-.btn-founder-mob:active { filter:brightness(0.9); }
+/* Form elements */
+.fg label{display:block;font-family:var(--f-o);font-size:.48rem;letter-spacing:3px;color:rgba(255,212,64,.5);margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,212,64,.03);border:1px solid rgba(255,212,64,.15);padding:12px 14px;color:var(--white);font-family:var(--f-b);font-size:1rem;outline:none;transition:border-color .3s;border-radius:0;-webkit-appearance:none}
+.fg input:focus,.fg select:focus{border-color:var(--gold);box-shadow:0 0 14px rgba(255,212,64,.12)}
+.fg input::placeholder{color:rgba(255,255,255,.18)}
+.fg select option{background:#0C0C0C}
+.fg input.err{border-color:var(--red);animation:shake .4s ease}
+.fg input.ok{border-color:var(--green)}
 
-/* Pack Communicator */
-.communicator-mob {
-  margin-top:12px; border:1px solid rgba(255,212,64,0.25); background:rgba(0,0,0,0.4);
-  animation:slide-up 0.5s ease;
-}
-.comm-hdr-mob {
-  display:flex; align-items:center; gap:8px; padding:10px 12px;
-  background:rgba(255,212,64,0.06); border-bottom:1px solid rgba(255,212,64,0.12);
-}
-.comm-dot-mob { width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 6px var(--gold); animation:dot-pulse 1.4s ease-in-out infinite; }
-.comm-title-mob { font-family:var(--f-digital); font-size:0.52rem; letter-spacing:3px; color:rgba(255,212,64,0.7); }
-.comm-status-mob { font-family:var(--f-digital); font-size:0.5rem; letter-spacing:2px; color:rgba(255,255,255,0.25); margin-left:auto; }
-.comm-body-mob { height:200px; overflow-y:auto; padding:10px 12px; display:flex; flex-direction:column; gap:8px; scroll-behavior:smooth; }
-.comm-body-mob::-webkit-scrollbar { width:2px; }
-.comm-body-mob::-webkit-scrollbar-thumb { background:rgba(255,212,64,0.2); }
-.comm-footer-mob { padding:6px 12px; border-top:1px solid rgba(255,212,64,0.07); font-family:var(--f-digital); font-size:0.48rem; color:rgba(255,255,255,0.15); letter-spacing:2px; text-align:center; }
+.fg-result{margin-top:8px;padding:10px 12px;background:rgba(39,201,63,.06);border:1px solid rgba(39,201,63,.25);font-family:var(--f-o);font-size:.5rem;letter-spacing:2px;color:var(--green);display:none}
+.fg-result.show{display:block;animation:slide-up .3s ease}
+.fg-err{margin-top:6px;font-family:var(--f-o);font-size:.45rem;letter-spacing:2px;color:var(--red);display:none}
+.fg-err.show{display:block}
 
-.chat-msg-mob { display:flex; gap:8px; align-items:flex-start; animation:msg-appear 0.4s ease both; }
-.chat-msg-mob.out { flex-direction:row-reverse; }
-.chat-av { width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,212,64,0.3);background:rgba(255,212,64,0.06);display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-size:0.7rem;color:var(--gold);flex-shrink:0; }
-.chat-av.me { color:var(--white);border-color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.05); }
-.chat-bub { max-width:78%;padding:8px 10px;background:rgba(20,18,10,0.8);border:1px solid rgba(255,212,64,0.10);border-left:2px solid var(--gold); }
-.chat-msg-mob.out .chat-bub { border-left:none;border-right:2px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.04); }
-.chat-snd { font-family:var(--f-digital);font-size:0.48rem;letter-spacing:2px;margin-bottom:3px;color:var(--gold); }
-.chat-msg-mob.out .chat-snd { color:rgba(255,255,255,0.45);text-align:right; }
-.chat-txt { font-family:var(--f-body);font-size:0.9rem;color:rgba(255,255,255,0.85);line-height:1.4; }
-.chat-msg-mob.out .chat-txt { text-align:right; }
-.chat-ts { font-family:var(--f-digital);font-size:0.45rem;color:rgba(255,255,255,0.2);margin-top:3px; }
-.chat-msg-mob.out .chat-ts { text-align:right; }
-.typing-mob { display:flex;align-items:center;gap:8px; }
-.typing-dots-mob { display:flex;gap:3px; }
-.typing-dots-mob span { width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:0.4;animation:dot-pulse 1.2s ease-in-out infinite; }
-.typing-dots-mob span:nth-child(2){animation-delay:0.2s}
-.typing-dots-mob span:nth-child(3){animation-delay:0.4s}
+.fg-avail{display:flex;align-items:center;gap:8px;margin-top:6px;font-family:var(--f-o);font-size:.5rem;letter-spacing:2px}
+.avail-ok{color:var(--green);display:none}
+.avail-no{color:var(--red);display:none}
+.avail-checking{color:rgba(255,212,64,.6);display:none;animation:blink 1s ease infinite}
 
-/* ── GOLD STAMP OVERLAY ── */
-#goldFlash { position:fixed;inset:0;z-index:10001;background:radial-gradient(ellipse,rgba(255,220,60,0.95),rgba(255,165,0,0.7) 35%,rgba(100,60,0,0.3) 70%,transparent);opacity:0;pointer-events:none;transition:opacity 0.1s; }
-#goldFlash.active{opacity:1;pointer-events:all;}
-#stampOverlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.88);opacity:0;pointer-events:none;transition:opacity 0.35s;}
-#stampOverlay.active{opacity:1;pointer-events:all;}
-#stampCard{background:#0C0C06;border:2px solid rgba(255,212,64,0.4);padding:clamp(1.5rem,5vw,2.5rem);text-align:center;max-width:320px;width:88%;transform:scale(2.2) rotate(-12deg);opacity:0;transition:transform 0.65s cubic-bezier(0.22,1,0.36,1),opacity 0.34s ease;box-shadow:0 0 60px rgba(255,212,64,0.25),0 0 120px rgba(255,212,64,0.10);}
-#stampOverlay.active #stampCard{transform:scale(1) rotate(0deg);opacity:1;}
-#stampOverlay.fly-away #stampCard{transform:scale(0.05) translate(-600px,-700px) rotate(900deg);opacity:0;transition:transform 0.68s cubic-bezier(0.55,0,1,0.45),opacity 0.32s ease 0.16s;}
-.sc-crown{font-size:2rem;display:block;margin-bottom:0.6rem;}
-.sc-welcome{font-family:var(--f-digital);font-size:0.55rem;letter-spacing:5px;margin-bottom:0.8rem;}
-.sc-num{font-family:var(--f-digital);font-size:0.55rem;letter-spacing:3px;margin-bottom:0.3rem;}
-.sc-name{font-family:var(--f-display);font-size:clamp(1.5rem,5vw,2rem);letter-spacing:4px;margin-bottom:0.25rem;}
-.sc-bike{font-family:var(--f-body);font-size:0.85rem;color:rgba(255,255,255,0.35);margin-bottom:1rem;}
-.sc-divider{width:50%;height:1px;margin:0 auto 1rem;}
-.sc-seal{font-family:var(--f-digital);font-size:0.52rem;letter-spacing:6px;}
+/* Action buttons */
+.btn-action{width:100%;padding:13px;border:none;cursor:pointer;font-family:var(--f-d);font-size:1.2rem;letter-spacing:4px;color:#050500;transition:all .2s;margin-top:4px}
+.btn-action:active{filter:brightness(.9);transform:scale(.99)}
+.btn-action.sec{background:rgba(255,212,64,.08);color:var(--gold);border:1px solid rgba(255,212,64,.2);font-size:1rem}
+.btn-action:disabled{opacity:.35;pointer-events:none}
+
+.btn-row{display:flex;gap:8px;margin-top:12px}
+.btn-back{flex:0 0 48px;padding:13px;border:1px solid rgba(255,212,64,.2);background:transparent;color:rgba(255,212,64,.6);font-family:var(--f-d);font-size:1rem;cursor:pointer;letter-spacing:2px;transition:all .2s}
+.btn-back:active{background:rgba(255,212,64,.06)}
+.btn-next{flex:1;padding:13px;border:none;cursor:pointer;font-family:var(--f-d);font-size:1.2rem;letter-spacing:4px;color:#050500;transition:all .2s}
+.btn-next:active{filter:brightness(.9);transform:scale(.99)}
+.btn-next:disabled{opacity:.3;pointer-events:none}
+
+/* OTP boxes */
+.otp-wrap{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.otp-box{width:42px;height:52px;background:rgba(255,212,64,.03);border:1px solid rgba(255,212,64,.15);text-align:center;font-family:var(--f-o);font-size:1.3rem;color:var(--gold);outline:none;border-radius:0;transition:border-color .3s}
+.otp-box:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(255,212,64,.15)}
+
+/* Persona tiles */
+.persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.persona-tile{background:rgba(255,255,255,.03);border:1px solid rgba(255,212,64,.12);padding:14px 8px;text-align:center;cursor:pointer;transition:all .25s}
+.persona-tile.sel{border-color:var(--gold);background:rgba(255,212,64,.08)}
+.persona-tile:active{background:rgba(255,212,64,.06)}
+.pt-icon{font-size:1.8rem;margin-bottom:6px}
+.pt-name{font-family:var(--f-d);font-size:1rem;letter-spacing:2px;color:var(--white)}
+.pt-desc{font-family:var(--f-o);font-size:.4rem;letter-spacing:1px;color:rgba(255,255,255,.4);margin-top:4px;line-height:1.5}
+
+/* Tier select in wizard */
+.tier-select-wrap{display:flex;flex-direction:column;gap:8px}
+.ts-card{border:1px solid rgba(255,212,64,.12);padding:14px;cursor:pointer;transition:all .2s}
+.ts-card.sel{border-color:var(--gold);background:rgba(255,212,64,.07)}
+.ts-card:active{background:rgba(255,212,64,.06)}
+.ts-name{font-family:var(--f-d);font-size:1.2rem;letter-spacing:3px;color:var(--white)}
+.ts-price{font-family:var(--f-o);font-size:.7rem;color:var(--gold);margin-top:3px}
+.ts-sub{font-family:var(--f-o);font-size:.42rem;color:rgba(255,255,255,.3);margin-top:2px;letter-spacing:1px}
+
+/* Payment emul */
+.emul-mob{display:none}
+.emul-mob.active{display:block;animation:slide-up .3s ease}
+.emul-log{background:rgba(0,0,0,.5);border:1px solid rgba(255,212,64,.1);padding:10px 12px;height:130px;overflow-y:auto;font-family:var(--f-o);font-size:.5rem;line-height:2;color:rgba(255,255,255,.35);scroll-behavior:smooth;margin-bottom:8px}
+.log-done{color:var(--gold);font-weight:700;text-shadow:0 0 8px rgba(255,212,64,.5)}
+.log-line{animation:slide-up .25s ease}
+.prog-mob-wrap{height:3px;background:rgba(255,212,64,.08);overflow:hidden;margin-bottom:16px}
+.prog-mob-fill{height:100%;width:0%;transition:width .5s ease;background:linear-gradient(90deg,var(--amber),var(--gold),var(--gold3));box-shadow:0 0 8px rgba(255,212,64,.6)}
+
+/* ═══════════════════════════
+   CREDIT CARD — landscape
+═══════════════════════════ */
+.mc-wrap{width:100%;padding:0 0 4px;animation:card-deal .6s cubic-bezier(.22,1,.36,1) both}
+.mc-card{width:100%;aspect-ratio:1.586/1;background:#0A0A04;border:1.5px solid var(--gold);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;position:relative;box-shadow:0 0 30px rgba(255,212,64,.25),0 0 60px rgba(255,212,64,.08);transition:box-shadow .3s}
+.mc-card:active{box-shadow:0 0 50px rgba(255,212,64,.45)}
+.mc-card::before{content:'BHRATHA BIKING LIMITED';position:absolute;bottom:28px;left:0;right:0;text-align:center;font-family:var(--f-o);font-size:.32rem;letter-spacing:5px;color:rgba(255,212,64,.07);pointer-events:none}
+.mc-header{padding:10px 14px 8px;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#111108 0%,#0A0A04 100%);border-bottom:1px solid rgba(255,212,64,.12);flex-shrink:0}
+.mc-persona-icon{font-size:1.6rem;flex-shrink:0;width:36px;text-align:center}
+.mc-center{flex:1;min-width:0}
+.mc-road-name{font-family:var(--f-d);font-size:clamp(1.1rem,4vw,1.4rem);letter-spacing:3px;color:#F5F0E0;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-road-sub{font-family:var(--f-o);font-size:.38rem;letter-spacing:2px;color:rgba(255,212,64,.4);margin-top:2px;transition:all .3s}
+.mc-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.mc-bbl{font-family:var(--f-d);font-size:.9rem;letter-spacing:4px;color:var(--gold);text-shadow:0 0 8px rgba(255,212,64,.6)}
+.mc-blood{background:#3d0808;border:1px solid #8b1a1a;color:#ff7070;font-family:var(--f-o);font-size:.55rem;font-weight:700;padding:3px 7px;border-radius:3px;letter-spacing:1px}
+.mc-body{flex:1;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid rgba(255,212,64,.08)}
+.mc-field{flex:1;padding:0 8px;border-right:1px solid rgba(255,212,64,.07)}
+.mc-field:first-child{padding-left:0}
+.mc-field:last-child{border-right:none}
+.mc-fl{font-family:var(--f-o);font-size:.34rem;letter-spacing:2px;color:rgba(255,212,64,.4);margin-bottom:3px;white-space:nowrap}
+.mc-fv{font-family:var(--f-b);font-size:.82rem;color:rgba(255,255,255,.8);line-height:1.2;word-break:break-word}
+.mc-footer{padding:6px 14px;display:flex;justify-content:space-between;align-items:center;background:#060602;flex-shrink:0}
+.mc-tier-num{font-family:var(--f-o);font-size:.38rem;letter-spacing:2px;color:rgba(255,212,64,.5)}
+.mc-tagline{font-family:var(--f-o);font-size:.33rem;letter-spacing:2px;color:rgba(255,255,255,.18)}
+.mc-tap-hint{text-align:center;margin-top:6px;font-family:var(--f-o);font-size:.48rem;letter-spacing:2px;color:rgba(255,212,64,.4)}
+
+/* Pack communicator */
+.communicator-mob{margin-top:14px;border:1px solid rgba(255,212,64,.25);background:rgba(0,0,0,.4);animation:slide-up .5s ease}
+.comm-hdr-mob{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,212,64,.06);border-bottom:1px solid rgba(255,212,64,.12)}
+.comm-dot-mob{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);animation:dot-pulse 1.4s ease-in-out infinite}
+.comm-title-mob{font-family:var(--f-o);font-size:.52rem;letter-spacing:3px;color:rgba(255,212,64,.7)}
+.comm-status-mob{font-family:var(--f-o);font-size:.5rem;letter-spacing:2px;color:rgba(255,255,255,.25);margin-left:auto}
+.comm-body-mob{height:200px;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;scroll-behavior:smooth}
+.comm-body-mob::-webkit-scrollbar{width:2px}
+.comm-body-mob::-webkit-scrollbar-thumb{background:rgba(255,212,64,.2)}
+.comm-footer-mob{padding:6px 12px;border-top:1px solid rgba(255,212,64,.07);font-family:var(--f-o);font-size:.48rem;color:rgba(255,255,255,.15);letter-spacing:2px;text-align:center}
+.chat-msg-mob{display:flex;gap:8px;align-items:flex-start;animation:msg-appear .4s ease both}
+.chat-msg-mob.out{flex-direction:row-reverse}
+.chat-av{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,212,64,.3);background:rgba(255,212,64,.06);display:flex;align-items:center;justify-content:center;font-family:var(--f-d);font-size:.7rem;color:var(--gold);flex-shrink:0}
+.chat-av.me{color:var(--white);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.05)}
+.chat-bub{max-width:78%;padding:8px 10px;background:rgba(20,18,10,.8);border:1px solid rgba(255,212,64,.1);border-left:2px solid var(--gold)}
+.chat-msg-mob.out .chat-bub{border-left:none;border-right:2px solid rgba(255,255,255,.35);background:rgba(255,255,255,.04)}
+.chat-snd{font-family:var(--f-o);font-size:.48rem;letter-spacing:2px;margin-bottom:3px;color:var(--gold)}
+.chat-msg-mob.out .chat-snd{color:rgba(255,255,255,.45);text-align:right}
+.chat-txt{font-family:var(--f-b);font-size:.9rem;color:rgba(255,255,255,.85);line-height:1.4}
+.chat-msg-mob.out .chat-txt{text-align:right}
+.chat-ts{font-family:var(--f-o);font-size:.45rem;color:rgba(255,255,255,.2);margin-top:3px}
+.chat-msg-mob.out .chat-ts{text-align:right}
+.typing-mob{display:flex;align-items:center;gap:8px}
+.typing-dots-mob{display:flex;gap:3px}
+.typing-dots-mob span{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.4;animation:dot-pulse 1.2s ease-in-out infinite}
+.typing-dots-mob span:nth-child(2){animation-delay:.2s}
+.typing-dots-mob span:nth-child(3){animation-delay:.4s}
+
+/* Stamp */
+#goldFlash{position:fixed;inset:0;z-index:10001;background:radial-gradient(ellipse,rgba(255,220,60,.95),rgba(255,165,0,.7) 35%,rgba(100,60,0,.3) 70%,transparent);opacity:0;pointer-events:none;transition:opacity .1s}
+#goldFlash.active{opacity:1;pointer-events:all}
+#stampOverlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:opacity .35s}
+#stampOverlay.active{opacity:1;pointer-events:all}
+#stampCard{background:#0C0C06;border:2px solid rgba(255,212,64,.4);padding:clamp(1.5rem,5vw,2.5rem);text-align:center;max-width:320px;width:88%;transform:scale(2.2) rotate(-12deg);opacity:0;transition:transform .65s cubic-bezier(.22,1,.36,1),opacity .34s ease;box-shadow:0 0 60px rgba(255,212,64,.25)}
+#stampOverlay.active #stampCard{transform:scale(1) rotate(0deg);opacity:1}
+#stampOverlay.fly-away #stampCard{transform:scale(.05) translate(-600px,-700px) rotate(900deg);opacity:0;transition:transform .68s cubic-bezier(.55,0,1,.45),opacity .32s ease .16s}
+.sc-crown{font-size:2rem;display:block;margin-bottom:.6rem}
+.sc-welcome{font-family:var(--f-o);font-size:.55rem;letter-spacing:5px;margin-bottom:.8rem}
+.sc-num{font-family:var(--f-o);font-size:.55rem;letter-spacing:3px;margin-bottom:.3rem}
+.sc-name{font-family:var(--f-d);font-size:clamp(1.5rem,5vw,2rem);letter-spacing:4px;margin-bottom:.25rem}
+.sc-bike{font-family:var(--f-b);font-size:.85rem;color:rgba(255,255,255,.35);margin-bottom:1rem}
+.sc-divider{width:50%;height:1px;margin:0 auto 1rem}
+.sc-seal{font-family:var(--f-o);font-size:.52rem;letter-spacing:6px}
 </style>
 </head>
 <body>
 
-<!-- Gold Flash + Stamp -->
 <div id="goldFlash"></div>
 <div id="stampOverlay">
   <div id="stampCard">
     <span class="sc-crown gold-foil">♛</span>
     <div class="sc-welcome gold-foil">WELCOME TO THE PACK</div>
     <div class="sc-num gold-foil" id="scNum">BBL-008</div>
-    <div class="sc-name" style="color:var(--white);text-shadow:0 0 20px rgba(255,255,255,0.6);" id="scName">RIDER</div>
+    <div class="sc-name" style="color:var(--white);text-shadow:0 0 20px rgba(255,255,255,.6)" id="scName">RIDER</div>
     <div class="sc-bike" id="scBike">Motorcycle · City</div>
     <div class="sc-divider gold-foil-bg"></div>
     <div class="sc-seal gold-foil">BHRATHA BIKING LIMITED</div>
   </div>
 </div>
 
-<!-- MAIN SHELL -->
 <div id="shell">
 
-  <!-- STATUS BAR -->
   <div id="statusBar">
     <div class="sb-left">
       <div class="sb-brand">BBL</div>
       <div class="sb-dot sb-green"></div>
-      <div class="sb-signal">LIVE</div>
+      <div class="sb-sig">LIVE</div>
     </div>
     <div class="sb-right">
       <div class="sb-time" id="liveTime">--:--</div>
-      <div class="sb-signal">BBL-OS v2.6</div>
+      <div class="sb-sig">BBL-OS v3.0</div>
     </div>
   </div>
 
-  <!-- SCREEN -->
   <div id="screen">
 
-    <!-- ─ BOOT SCREEN ─ -->
+    <!-- BOOT -->
     <div id="bootScreen">
       <div class="boot-grid"></div>
       <div class="boot-hud-scan"></div>
@@ -634,48 +379,46 @@ body::after {
       <div class="boot-status" id="bootStatus">—</div>
     </div>
 
-    <!-- ─ HOME PANEL ─ -->
+    <!-- HOME -->
     <div class="view-panel" id="homePanel">
-
-      <!-- GAUGE CLUSTER -->
       <div class="gauge-cluster">
         <div class="cluster-left">
-          <div class="stat-box active-stat">
+          <div class="stat-box a">
             <div class="stat-label">MEMBERS</div>
-            <div class="stat-val gold" id="memberCountDash">007</div>
+            <div class="stat-val g" id="memberCountDash">007</div>
             <div class="stat-sub">ALL INDIA</div>
           </div>
           <div class="stat-box">
             <div class="stat-label">STATUS</div>
-            <div class="stat-val" style="font-size:0.9rem;color:var(--green);font-family:var(--f-digital);text-shadow:0 0 8px var(--green);">LIVE</div>
+            <div class="stat-val" style="font-size:.9rem;color:var(--green);font-family:var(--f-o);text-shadow:0 0 8px var(--green)">LIVE</div>
             <div class="stat-sub">PACK ONLINE</div>
           </div>
         </div>
-
-        <!-- CENTRAL SPEEDO -->
         <div class="speedo-wrap">
           <div class="speedo-ring">
             <div class="speedo-bbl">BBL</div>
             <div class="speedo-sub">BHRATHA BIKING</div>
-            <div class="speedo-tag">DRIVEN · DISCIPLINED</div>
           </div>
         </div>
-
         <div class="cluster-right">
-          <div class="stat-box active-stat" style="text-align:right;">
-            <div class="stat-label">ALPHA TIER</div>
-            <div class="stat-val gold" style="font-size:1rem;font-family:var(--f-digital);">₹1L</div>
-            <div class="stat-sub">LIFETIME</div>
-          </div>
-          <div class="stat-box" style="text-align:right;">
+          <div class="stat-box a" style="text-align:right">
             <div class="stat-label">NEXT RIDE</div>
-            <div class="stat-val" style="font-size:1rem;color:var(--white);font-family:var(--f-digital);">22 MAR</div>
+            <div class="stat-val" style="font-size:1rem;font-family:var(--f-o)">22 MAR</div>
             <div class="stat-sub">GHATS PILGR.</div>
+          </div>
+          <div class="stat-box" style="text-align:right">
+            <div class="stat-label">MEMBERSHIP</div>
+            <div class="stat-val g" style="font-size:.95rem;font-family:var(--f-o)">₹101</div>
+            <div class="stat-sub">PER MONTH</div>
           </div>
         </div>
       </div>
 
-      <!-- QUICK ACTION BUTTONS -->
+      <!-- TAGLINE — one place, prominent -->
+      <div class="tagline-strip">
+        <span>DRIVEN &nbsp;·&nbsp; DISCIPLINED &nbsp;·&nbsp; DESTINED</span>
+      </div>
+
       <div class="hero-actions">
         <button class="ha-btn" onclick="switchPanel('ridesPanel',3)">
           <div class="ha-icon">🏍️</div>
@@ -690,19 +433,15 @@ body::after {
         <button class="ha-btn" onclick="switchPanel('joinPanel',4)">
           <div class="ha-icon">⚡</div>
           <div class="ha-label">JOIN NOW</div>
-          <div class="ha-val">FREE → ₹1L</div>
+          <div class="ha-val">₹101 / MONTH</div>
         </button>
       </div>
 
-      <!-- NEXT RIDE -->
       <div class="next-ride-wrap">
         <div class="section-hdr">// NEXT RIDE</div>
         <div class="next-ride-card" onclick="switchPanel('ridesPanel',3)">
-          <div class="nrc-date">
-            <div class="nrc-dd">22</div>
-            <div class="nrc-mon">MAR</div>
-          </div>
-          <div class="nrc-info">
+          <div class="nrc-date"><div class="nrc-dd">22</div><div class="nrc-mon">MAR</div></div>
+          <div style="flex:1">
             <div class="nrc-tag">MOUNTAIN · 480KM</div>
             <div class="nrc-name">The Ghats Pilgrimage</div>
             <div class="nrc-route">Bengaluru → Coorg → Madikeri · 2 Days</div>
@@ -711,72 +450,24 @@ body::after {
         </div>
       </div>
 
-      <!-- QUICK STATS -->
-      <div class="section-hdr" style="padding:0 12px;">// CLUB STATS</div>
+      <div style="padding:0 12px">
+        <div class="section-hdr">// CLUB STATS</div>
+      </div>
       <div class="quick-stats">
-        <div class="qs-item">
-          <div class="qs-val">5</div>
-          <div class="qs-label">RIDES PLANNED</div>
-        </div>
-        <div class="qs-item">
-          <div class="qs-val">3</div>
-          <div class="qs-label">MEMBER TIERS</div>
-        </div>
-        <div class="qs-item">
-          <div class="qs-val">6</div>
-          <div class="qs-label">INDIA STATES</div>
-        </div>
+        <div class="qs-item"><div class="qs-val">5</div><div class="qs-label">RIDES PLANNED</div></div>
+        <div class="qs-item"><div class="qs-val" id="qs-members">7</div><div class="qs-label">PACK RIDERS</div></div>
+        <div class="qs-item"><div class="qs-val">6</div><div class="qs-label">INDIA STATES</div></div>
       </div>
 
-      <!-- MISSION STATEMENT -->
-      <div style="padding:0 12px 10px;">
+      <div style="padding:0 12px">
         <div class="section-hdr">// MISSION</div>
-        <div style="
-          background:rgba(255,212,64,0.04);
-          border:1px solid rgba(255,212,64,0.18);
-          border-left:3px solid var(--gold);
-          padding:16px 14px;
-        ">
-          <p style="
-            font-family:var(--f-body);
-            font-size:1.08rem;
-            line-height:1.7;
-            color:rgba(255,255,255,0.80);
-            letter-spacing:0.5px;
-          ">
-            We ride without noise — no politics, no ego, no clutter.
-            Just verified riders who signal before they move,
-            hold the line under pressure, and show up for each other
-            on every road.
-            <span style="color:var(--gold);font-family:var(--f-display);letter-spacing:3px;font-size:1rem;">
-              &nbsp;BBL is not a group. It is a standard.
-            </span>
-          </p>
-        </div>
       </div>
-
-
-      <div style="padding:0 12px 12px;">
-        <div class="section-hdr">// MEMBERSHIP TIERS</div>
-        <div style="display:flex;gap:4px;">
-          <div onclick="switchPanel('membershipPanel',2)" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:10px 8px;cursor:pointer;text-align:center;transition:all 0.2s;" ontouchstart="this.style.background='rgba(255,212,64,0.06)'" ontouchend="this.style.background='rgba(255,255,255,0.04)'">
-            <div style="font-family:var(--f-display);font-size:1.1rem;color:rgba(255,255,255,0.55);letter-spacing:2px;">FREE</div>
-            <div style="font-family:var(--f-digital);font-size:0.42rem;letter-spacing:2px;color:rgba(255,255,255,0.25);margin-top:2px;">VISITOR</div>
-          </div>
-          <div onclick="switchPanel('membershipPanel',2)" style="flex:1;background:rgba(255,212,64,0.05);border:1px solid rgba(255,212,64,0.22);padding:10px 8px;cursor:pointer;text-align:center;transition:all 0.2s;" ontouchstart="this.style.background='rgba(255,212,64,0.12)'" ontouchend="this.style.background='rgba(255,212,64,0.05)'">
-            <div style="font-family:var(--f-display);font-size:1.1rem;color:var(--gold);letter-spacing:2px;">₹101<span style="font-size:0.5em;opacity:0.7;">/mo</span></div>
-            <div style="font-family:var(--f-digital);font-size:0.42rem;letter-spacing:2px;color:rgba(255,212,64,0.5);margin-top:2px;">PACK MEMBER</div>
-          </div>
-          <div onclick="switchPanel('membershipPanel',2)" style="flex:1;background:rgba(255,212,64,0.04);border:1px solid rgba(255,212,64,0.20);padding:10px 8px;cursor:pointer;text-align:center;transition:all 0.2s;" ontouchstart="this.style.background='rgba(255,212,64,0.10)'" ontouchend="this.style.background='rgba(255,212,64,0.04)'">
-            <div class="gold-foil" style="font-family:var(--f-display);font-size:0.95rem;letter-spacing:1px;">₹1,00,001</div>
-            <div style="font-family:var(--f-digital);font-size:0.42rem;letter-spacing:2px;color:rgba(255,212,64,0.5);margin-top:2px;">ALPHA ♛</div>
-          </div>
-        </div>
+      <div class="mission-block">
+        <p class="mission-text">We ride without noise — no politics, no ego, no clutter. Just verified riders who signal before they move, hold the line under pressure, and show up for each other on every road. <em>BBL is not a group. It is a standard.</em></p>
       </div>
+    </div>
 
-    </div><!-- /homePanel -->
-
-    <!-- ─ PACK PANEL ─ -->
+    <!-- PACK -->
     <div class="view-panel" id="packPanel">
       <div class="panel-hdr">
         <div class="panel-title-sm">// members.list()</div>
@@ -785,211 +476,359 @@ body::after {
       <div class="members-list" id="membersList"></div>
     </div>
 
-    <!-- ─ RIDES PANEL ─ -->
+    <!-- RIDES -->
     <div class="view-panel" id="ridesPanel">
       <div class="panel-hdr">
         <div class="panel-title-sm">// rides.upcoming()</div>
         <div class="panel-title">RIDE <span>CALENDAR</span></div>
       </div>
       <div class="rides-list-mobile">
-        <div class="ride-card-mobile" onclick="">
-          <div class="rcm-date"><div class="rcm-dd">22</div><div class="rcm-mon">MAR</div><div class="rcm-yr">2026</div></div>
-          <div class="rcm-info">
-            <div class="rcm-tag">MOUNTAIN</div>
-            <div class="rcm-name">The Ghats Pilgrimage</div>
-            <div class="rcm-route">Bengaluru → Coorg → Madikeri · 480KM · 2 Days</div>
-          </div>
-          <div class="rcm-arrow">›</div>
-        </div>
-        <div class="ride-card-mobile">
-          <div class="rcm-date"><div class="rcm-dd">05</div><div class="rcm-mon">APR</div><div class="rcm-yr">2026</div></div>
-          <div class="rcm-info">
-            <div class="rcm-tag">COASTAL</div>
-            <div class="rcm-name">Coastal Thunder Run</div>
-            <div class="rcm-route">Bengaluru → Mangaluru → Goa · 760KM · 3 Days</div>
-          </div>
-          <div class="rcm-arrow">›</div>
-        </div>
-        <div class="ride-card-mobile">
-          <div class="rcm-date"><div class="rcm-dd">26</div><div class="rcm-mon">APR</div><div class="rcm-yr">2026</div></div>
-          <div class="rcm-info">
-            <div class="rcm-tag">HERITAGE</div>
-            <div class="rcm-name">Deccan Dawn Patrol</div>
-            <div class="rcm-route">Bengaluru → Hampi → Badami · 620KM · 2 Days</div>
-          </div>
-          <div class="rcm-arrow">›</div>
-        </div>
-        <div class="ride-card-mobile">
-          <div class="rcm-date"><div class="rcm-dd">18</div><div class="rcm-mon">MAY</div><div class="rcm-yr">2026</div></div>
-          <div class="rcm-info">
-            <div class="rcm-tag">GRAND TOUR</div>
-            <div class="rcm-name">South India Grand Tour</div>
-            <div class="rcm-route">6 States · 4,200KM · 10 Days</div>
-          </div>
-          <div class="rcm-arrow">›</div>
-        </div>
-        <div class="ride-card-mobile">
-          <div class="rcm-date"><div class="rcm-dd">14</div><div class="rcm-mon">JUN</div><div class="rcm-yr">2026</div></div>
-          <div class="rcm-info">
-            <div class="rcm-tag">SEASONAL</div>
-            <div class="rcm-name">Monsoon Ridge Run</div>
-            <div class="rcm-route">Bengaluru → Ooty → Kodaikanal · 540KM · 2 Days</div>
-          </div>
-          <div class="rcm-arrow">›</div>
-        </div>
+        <div class="ride-card-mobile"><div class="rcm-date"><div class="rcm-dd">22</div><div class="rcm-mon">MAR</div><div class="rcm-yr">2026</div></div><div><div class="rcm-tag">MOUNTAIN</div><div class="rcm-name">The Ghats Pilgrimage</div><div class="rcm-route">Bengaluru → Coorg → Madikeri · 480KM · 2 Days</div></div><div class="rcm-arrow">›</div></div>
+        <div class="ride-card-mobile"><div class="rcm-date"><div class="rcm-dd">05</div><div class="rcm-mon">APR</div><div class="rcm-yr">2026</div></div><div><div class="rcm-tag">COASTAL</div><div class="rcm-name">Coastal Thunder Run</div><div class="rcm-route">Bengaluru → Mangaluru → Goa · 760KM · 3 Days</div></div><div class="rcm-arrow">›</div></div>
+        <div class="ride-card-mobile"><div class="rcm-date"><div class="rcm-dd">26</div><div class="rcm-mon">APR</div><div class="rcm-yr">2026</div></div><div><div class="rcm-tag">HERITAGE</div><div class="rcm-name">Deccan Dawn Patrol</div><div class="rcm-route">Bengaluru → Hampi → Badami · 620KM · 2 Days</div></div><div class="rcm-arrow">›</div></div>
+        <div class="ride-card-mobile"><div class="rcm-date"><div class="rcm-dd">18</div><div class="rcm-mon">MAY</div><div class="rcm-yr">2026</div></div><div><div class="rcm-tag">GRAND TOUR</div><div class="rcm-name">South India Grand Tour</div><div class="rcm-route">6 States · 4,200KM · 10 Days</div></div><div class="rcm-arrow">›</div></div>
+        <div class="ride-card-mobile"><div class="rcm-date"><div class="rcm-dd">14</div><div class="rcm-mon">JUN</div><div class="rcm-yr">2026</div></div><div><div class="rcm-tag">SEASONAL</div><div class="rcm-name">Monsoon Ridge Run</div><div class="rcm-route">Bengaluru → Ooty → Kodaikanal · 540KM · 2 Days</div></div><div class="rcm-arrow">›</div></div>
       </div>
     </div>
 
-    <!-- ─ MEMBERSHIP PANEL ─ -->
+    <!-- MEMBERSHIP -->
     <div class="view-panel" id="membershipPanel">
       <div class="panel-hdr">
         <div class="panel-title-sm">// membership.tiers()</div>
         <div class="panel-title">CHOOSE <span>TIER</span></div>
       </div>
       <div class="tier-list">
-
-        <!-- FREE -->
-        <div class="tier-mobile">
+        <!-- FREE — COMING SOON -->
+        <div class="tier-mobile tier-cs" style="position:relative">
+          <div class="cs-pill">COMING SOON</div>
           <div class="tier-badge-mob">TIER · 01 · VISITOR</div>
           <div class="tier-name-mob">VISITOR</div>
-          <div class="tier-price-mob" style="color:rgba(255,255,255,0.55);font-family:var(--f-digital);font-size:1.8rem;">FREE</div>
-          <div class="tier-features-mob">
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Read-only access to all ride posts</div>
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>View upcoming ride calendar</div>
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Meet the Pack — member directory</div>
+          <div class="tier-price-mob" style="color:rgba(255,255,255,.4);font-family:var(--f-o);font-size:1.8rem">FREE</div>
+          <div class="tier-features-mob" style="margin-top:8px">
+            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Read-only ride posts</div>
+            <div class="tf-mob"><span class="tf-mob-icon">◆</span>View upcoming calendar</div>
           </div>
-          <button class="tier-cta-mob" onclick="switchPanel('joinPanel',4)" style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.10);">SIGN UP FREE →</button>
         </div>
-
-        <!-- MEMBER -->
-        <div class="tier-mobile tier-pop">
-          <div class="popular-pill">MOST POPULAR</div>
+        <!-- MEMBER — ACTIVE -->
+        <div class="tier-mobile tier-active" style="position:relative">
+          <div class="popular-pill">OPEN NOW</div>
           <div class="tier-badge-mob">TIER · 02 · MEMBER</div>
           <div class="tier-name-mob">PACK MEMBER</div>
           <div class="tier-price-mob">₹101<span>/mo</span></div>
-          <div style="font-family:var(--f-digital);font-size:0.45rem;letter-spacing:2px;color:rgba(255,212,64,0.5);margin-top:2px;">OR ₹1,001/YR · SAVE 2 MONTHS</div>
+          <div style="font-family:var(--f-o);font-size:.45rem;letter-spacing:2px;color:rgba(255,212,64,.5);margin-top:2px">OR ₹1,001/YR · SAVE 2 MONTHS</div>
           <div class="tier-features-mob">
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Everything in Visitor</div>
             <div class="tf-mob"><span class="tf-mob-icon">◆</span>Real-time Pack Communicator</div>
             <div class="tf-mob"><span class="tf-mob-icon">◆</span>Create & organise your own rides</div>
             <div class="tf-mob"><span class="tf-mob-icon">◆</span>Event Calendar — RSVP & create</div>
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Voting rights — AGR</div>
+            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Voting rights — Annual General Rides</div>
             <div class="tf-mob"><span class="tf-mob-icon">◆</span>Chapter networking summits</div>
+            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Digital member card with QR identity</div>
           </div>
-          <button class="tier-cta-mob gold-foil-bg" onclick="switchPanel('joinPanel',4)">BECOME A MEMBER →</button>
+          <button class="tier-cta-mob gold-foil-bg" onclick="switchPanel('joinPanel',4)">JOIN THE PACK →</button>
         </div>
-
-        <!-- ALPHA -->
-        <div class="tier-mobile tier-alpha">
+        <!-- ALPHA — COMING SOON -->
+        <div class="tier-mobile tier-cs" style="position:relative">
+          <div class="cs-pill">COMING SOON</div>
           <div class="tier-badge-mob">TIER · 03 · ALPHA</div>
           <div class="tier-name-mob">ALPHA MEMBER ♛</div>
-          <div class="tier-price-mob gold-foil" style="-webkit-text-fill-color:unset;">₹1,00,001<span>/yr</span></div>
-          <div style="font-family:var(--f-digital);font-size:0.42rem;letter-spacing:2px;color:rgba(255,212,64,0.5);margin-top:2px;">LIFETIME OPTION AVAILABLE</div>
-          <div class="tier-features-mob">
+          <div class="tier-price-mob" style="font-size:1.5rem">₹1,00,001<span>/yr</span></div>
+          <div class="tier-features-mob" style="margin-top:8px">
             <div class="tf-mob"><span class="tf-mob-icon">◆</span>Everything in Pack Member</div>
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Alpha status — digitally verified</div>
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>BBL Shareholder certificate + digital card</div>
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Priority on all national ride registrations</div>
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Direct line to Chairman & Founder</div>
-            <div class="tf-mob"><span class="tf-mob-icon">◆</span>24×7 legal & roadside support</div>
+            <div class="tf-mob"><span class="tf-mob-icon">◆</span>BBL Shareholder certificate</div>
+            <div class="tf-mob"><span class="tf-mob-icon">◆</span>Direct line to Chairman</div>
           </div>
-          <button class="tier-cta-mob gold-foil-bg" onclick="switchPanel('joinPanel',4)">APPLY FOR ALPHA →</button>
         </div>
-
       </div>
     </div>
 
-    <!-- ─ JOIN PANEL ─ -->
+    <!-- JOIN — 10-STEP WIZARD -->
     <div class="view-panel" id="joinPanel">
-      <div class="panel-hdr">
+      <div class="panel-hdr" style="flex-shrink:0">
         <div class="panel-title-sm">// membership.apply()</div>
         <div class="panel-title">JOIN THE <span>LIMITED</span></div>
       </div>
-      <div class="join-inner">
-        <div id="appForm">
-          <div class="join-form">
-            <div class="fg-m"><label>// full_name</label><input id="fn" placeholder="As per riding license"></div>
-            <div class="fg-m"><label>// motorcycle</label><input id="fb" placeholder="e.g. Royal Enfield Himalayan 450"></div>
-            <div class="fg-m"><label>// city</label>
-              <select id="fc">
-                <option value="" disabled selected>Select your city</option>
-                <option value="Bengaluru">Bengaluru</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Chennai">Chennai</option>
-                <option value="Hyderabad">Hyderabad</option>
-                <option value="Pune">Pune</option>
-                <option value="Kolkata">Kolkata</option>
-                <option value="Other India">Other India</option>
-              </select>
-            </div>
-            <div class="fg-m"><label>// membership_tier</label>
-              <select id="ftier">
-                <option value="free">Visitor (Free)</option>
-                <option value="member" selected>Pack Member — ₹101/mo</option>
-                <option value="alpha">Alpha Member ♛ — ₹1,00,001/yr</option>
-              </select>
-            </div>
-            <div class="fg-m"><label>// years_riding</label>
-              <select id="fy">
-                <option value="Under 1 year">Under 1 year</option>
-                <option value="1-3 years">1–3 years</option>
-                <option value="3-7 years" selected>3–7 years</option>
-                <option value="7+ years">7+ years</option>
-              </select>
-            </div>
-            <button class="btn-apply-mob gold-foil-bg" onclick="startApplication()">⚡ APPLY TO THE PACK</button>
+      <div class="wizard-prog-wrap"><div class="wizard-prog-fill" id="wizProg"></div></div>
+      <div class="wizard-step-label" id="wizLabel">STEP 1 OF 10 · DRIVING LICENCE</div>
+
+      <!-- STEP 1: DL -->
+      <div class="join-step active" id="step1">
+        <div class="js-title">DL NUMBER</div>
+        <div class="js-sub">DRIVING LICENCE VERIFICATION</div>
+        <div class="js-body">
+          <div class="fg">
+            <label>// driving_licence_number</label>
+            <input id="dlInput" placeholder="e.g. KA01DL2024001" style="text-transform:uppercase">
+          </div>
+          <button class="btn-action gold-foil-bg" onclick="verifyDL()">⚡ VERIFY LICENCE</button>
+          <div class="fg-result" id="dlResult"></div>
+          <div class="fg-err" id="dlErr">Invalid DL format. Try: KA01DL2024001</div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-next gold-foil-bg" id="dlNext" onclick="goToStep(2)" disabled>NEXT →</button>
           </div>
         </div>
-
-        <!-- EMUL PROGRESS -->
-        <div class="emul-mob" id="emulArea">
-          <div style="font-family:var(--f-display);font-size:1.3rem;letter-spacing:4px;color:var(--gold);margin-bottom:8px;">PROCESSING APPLICATION</div>
-          <div class="emul-log" id="monoLog"></div>
-          <div class="prog-mob-wrap"><div class="prog-mob-fill" id="progFill"></div></div>
-          <div id="cardReveal"></div>
-        </div>
-
       </div>
-    </div>
+
+      <!-- STEP 2: OTP -->
+      <div class="join-step" id="step2">
+        <div class="js-title">PHONE + OTP</div>
+        <div class="js-sub">SECURE VERIFICATION</div>
+        <div class="js-body">
+          <div class="fg">
+            <label>// mobile_number</label>
+            <input id="phoneInput" type="tel" placeholder="+91 98765 43210" maxlength="13">
+          </div>
+          <button class="btn-action gold-foil-bg" id="sendOtpBtn" onclick="sendOTP()">SEND OTP →</button>
+          <div id="otpSection" style="display:none">
+            <div class="fg-result show" style="margin-bottom:10px">✓ OTP sent to your number · Demo code: 111111</div>
+            <div class="fg"><label>// enter_6_digit_otp</label></div>
+            <div class="otp-wrap">
+              <input class="otp-box" maxlength="1" id="o1" oninput="otpAdvance(this,'o2')" onkeydown="otpBack(event,this,'')">
+              <input class="otp-box" maxlength="1" id="o2" oninput="otpAdvance(this,'o3')" onkeydown="otpBack(event,this,'o1')">
+              <input class="otp-box" maxlength="1" id="o3" oninput="otpAdvance(this,'o4')" onkeydown="otpBack(event,this,'o2')">
+              <input class="otp-box" maxlength="1" id="o4" oninput="otpAdvance(this,'o5')" onkeydown="otpBack(event,this,'o3')">
+              <input class="otp-box" maxlength="1" id="o5" oninput="otpAdvance(this,'o6')" onkeydown="otpBack(event,this,'o4')">
+              <input class="otp-box" maxlength="1" id="o6" oninput="otpAdvance(this,'')" onkeydown="otpBack(event,this,'o5')">
+            </div>
+            <div class="fg-err" id="otpErr">Incorrect OTP. Hint: 111111</div>
+            <button class="btn-action gold-foil-bg" onclick="verifyOTP()">VERIFY OTP →</button>
+          </div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-back" onclick="goToStep(1)">‹</button>
+            <button class="btn-next gold-foil-bg" id="otpNext" onclick="goToStep(3)" disabled>NEXT →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: EMAIL -->
+      <div class="join-step" id="step3">
+        <div class="js-title">EMAIL</div>
+        <div class="js-sub">YOUR CONTACT ADDRESS</div>
+        <div class="js-body">
+          <div class="fg">
+            <label>// email_address</label>
+            <input id="emailInput" type="email" placeholder="rider@domain.com">
+          </div>
+          <div class="fg-err" id="emailErr">Enter a valid email address</div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-back" onclick="goToStep(2)">‹</button>
+            <button class="btn-next gold-foil-bg" onclick="submitEmail()">NEXT →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: ROAD NAME -->
+      <div class="join-step" id="step4">
+        <div class="js-title">YOUR NAME</div>
+        <div class="js-sub">LEGAL NAME + ROAD NAME</div>
+        <div class="js-body">
+          <div class="fg">
+            <label>// legal_name · from DL</label>
+            <input id="legalNameDisp" readonly style="background:rgba(255,212,64,.06);border-color:rgba(255,212,64,.3);color:rgba(255,212,64,.8)">
+          </div>
+          <div class="fg" style="margin-top:6px">
+            <label>// road_name · your BBL identity</label>
+            <input id="roadNameInput" placeholder="e.g. IRON HAWK" style="text-transform:uppercase" oninput="checkRoadNameAvail()">
+          </div>
+          <div class="fg-avail">
+            <span class="avail-checking" id="rnChecking">⟳ CHECKING...</span>
+            <span class="avail-ok" id="rnOk">✓ AVAILABLE — LOCKED IN</span>
+            <span class="avail-no" id="rnNo">✗ TAKEN — TRY ANOTHER</span>
+          </div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-back" onclick="goToStep(3)">‹</button>
+            <button class="btn-next gold-foil-bg" id="rnNext" onclick="goToStep(5)" disabled>NEXT →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5: BIKE -->
+      <div class="join-step" id="step5">
+        <div class="js-title">YOUR MACHINE</div>
+        <div class="js-sub">REGISTERED MOTORCYCLE</div>
+        <div class="js-body">
+          <div class="fg">
+            <label>// bike_brand</label>
+            <select id="bikeBrand" onchange="populateModels()">
+              <option value="" disabled selected>Select brand</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>// bike_model</label>
+            <select id="bikeModel" disabled>
+              <option value="" disabled selected>Select model</option>
+            </select>
+          </div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-back" onclick="goToStep(4)">‹</button>
+            <button class="btn-next gold-foil-bg" id="bikeNext" onclick="submitBike()" disabled>NEXT →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6: PINCODE -->
+      <div class="join-step" id="step6">
+        <div class="js-title">PARKED AT</div>
+        <div class="js-sub">YOUR BASE LOCATION</div>
+        <div class="js-body">
+          <div class="fg">
+            <label>// pincode · 6 digits</label>
+            <input id="pincodeInput" type="number" placeholder="e.g. 560001" maxlength="6" oninput="lookupPincode()" style="-moz-appearance:textfield">
+          </div>
+          <div class="fg-result" id="pincodeResult"></div>
+          <div class="fg" id="cityManualWrap" style="display:none;margin-top:6px">
+            <label>// city_name · enter manually</label>
+            <input id="cityManual" placeholder="Your city">
+          </div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-back" onclick="goToStep(5)">‹</button>
+            <button class="btn-next gold-foil-bg" id="pincodeNext" onclick="submitPincode()" disabled>NEXT →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7: PERSONA -->
+      <div class="join-step" id="step7">
+        <div class="js-title">YOUR PERSONA</div>
+        <div class="js-sub">WHO ARE YOU IN THE PACK</div>
+        <div class="js-body">
+          <div class="persona-grid">
+            <div class="persona-tile" id="pt-biker" onclick="selectPersona('biker',this)">
+              <div class="pt-icon">🏍️</div>
+              <div class="pt-name">BIKER</div>
+              <div class="pt-desc">Always on two wheels. Road is life.</div>
+            </div>
+            <div class="persona-tile" id="pt-tech" onclick="selectPersona('tech',this)">
+              <div class="pt-icon">💻</div>
+              <div class="pt-name">TECH</div>
+              <div class="pt-desc">Builds in the background. Digital engine.</div>
+            </div>
+            <div class="persona-tile" id="pt-muscle" onclick="selectPersona('muscle',this)">
+              <div class="pt-icon">💪</div>
+              <div class="pt-name">MUSCLE</div>
+              <div class="pt-desc">Moves money. Builds empires.</div>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-back" onclick="goToStep(6)">‹</button>
+            <button class="btn-next gold-foil-bg" id="personaNext" onclick="goToStep(8)" disabled>NEXT →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 8: DREAM SPACE -->
+      <div class="join-step" id="step8">
+        <div class="js-title">DREAM SPACE</div>
+        <div class="js-sub">YOUR COWORKING DESTINATION</div>
+        <div class="js-body">
+          <div class="fg">
+            <label>// coworking_space_name</label>
+            <input id="dreamInput" placeholder="e.g. 91Springboard, Koramangala">
+          </div>
+          <div style="font-family:var(--f-o);font-size:.45rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:6px">Where you'd ride to work from. The space that fits your vibe.</div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-back" onclick="goToStep(7)">‹</button>
+            <button class="btn-next gold-foil-bg" onclick="submitDream()">NEXT →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 9: BLOOD TYPE -->
+      <div class="join-step" id="step9">
+        <div class="js-title">BLOOD TYPE</div>
+        <div class="js-sub">CRITICAL — ON YOUR CARD</div>
+        <div class="js-body">
+          <div class="fg">
+            <label>// blood_group</label>
+            <select id="bloodInput">
+              <option value="" disabled selected>Select blood type</option>
+              <option>A+</option><option>A−</option>
+              <option>B+</option><option>B−</option>
+              <option>AB+</option><option>AB−</option>
+              <option>O+</option><option>O−</option>
+            </select>
+          </div>
+          <div style="font-family:var(--f-o);font-size:.45rem;letter-spacing:2px;color:rgba(255,212,64,.4);margin-top:6px;padding:8px;border:1px solid rgba(255,212,64,.12)">◆ Displayed on your member card for roadside emergencies</div>
+          <div class="btn-row" style="margin-top:auto">
+            <button class="btn-back" onclick="goToStep(8)">‹</button>
+            <button class="btn-next gold-foil-bg" onclick="submitBlood()">NEXT →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 10: TIER + PAYMENT -->
+      <div class="join-step" id="step10">
+        <div class="js-title">CHOOSE PLAN</div>
+        <div class="js-sub">SECURE PAYMENT</div>
+        <div class="js-body">
+          <div id="tierSelectWrap">
+            <div class="tier-select-wrap">
+              <div class="ts-card sel" id="ts-monthly" onclick="selectTier('monthly',this)">
+                <div class="ts-name">MONTHLY PACK</div>
+                <div class="ts-price">₹101 / month</div>
+                <div class="ts-sub">Pay monthly · Cancel anytime</div>
+              </div>
+              <div class="ts-card" id="ts-annual" onclick="selectTier('annual',this)">
+                <div class="ts-name">ANNUAL PACK</div>
+                <div class="ts-price">₹1,001 / year</div>
+                <div class="ts-sub">Save 2 months · Best value</div>
+              </div>
+            </div>
+            <div class="btn-row" style="margin-top:12px">
+              <button class="btn-back" onclick="goToStep(9)">‹</button>
+              <button class="btn-next gold-foil-bg" onclick="startPayment()">PAY &amp; JOIN →</button>
+            </div>
+          </div>
+          <div class="emul-mob" id="paymentArea">
+            <div style="font-family:var(--f-d);font-size:1.3rem;letter-spacing:4px;color:var(--gold);margin-bottom:8px">PROCESSING</div>
+            <div class="emul-log" id="payLog"></div>
+            <div class="prog-mob-wrap"><div class="prog-mob-fill" id="payFill"></div></div>
+            <div id="cardReveal" style="display:none"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /joinPanel -->
 
   </div><!-- /screen -->
 
-  <!-- BOTTOM NAV -->
   <div id="bottomNav">
-    <button class="bnav-btn active" onclick="switchPanel('homePanel',0);setNavActive(this)">
-      <div class="bnav-icon">🏠</div>
-      <div class="bnav-label">HOME</div>
+    <button class="bnav-btn active" onclick="switchPanel('homePanel',0);setNav(this)">
+      <div class="bnav-icon">🏠</div><div class="bnav-label">HOME</div>
     </button>
-    <button class="bnav-btn" onclick="switchPanel('packPanel',1);setNavActive(this)">
-      <div class="bnav-icon">👥</div>
-      <div class="bnav-label">PACK</div>
+    <button class="bnav-btn" onclick="switchPanel('packPanel',1);setNav(this)">
+      <div class="bnav-icon">👥</div><div class="bnav-label">PACK</div>
     </button>
-    <button class="bnav-btn" onclick="switchPanel('membershipPanel',2);setNavActive(this)">
-      <div class="bnav-icon">🏅</div>
-      <div class="bnav-label">TIERS</div>
+    <button class="bnav-btn" onclick="switchPanel('membershipPanel',2);setNav(this)">
+      <div class="bnav-icon">🏅</div><div class="bnav-label">TIERS</div>
     </button>
-    <button class="bnav-btn" onclick="switchPanel('ridesPanel',3);setNavActive(this)">
-      <div class="bnav-icon">🗺️</div>
-      <div class="bnav-label">RIDES</div>
+    <button class="bnav-btn" onclick="switchPanel('ridesPanel',3);setNav(this)">
+      <div class="bnav-icon">🗺️</div><div class="bnav-label">RIDES</div>
     </button>
-    <button class="bnav-btn" onclick="switchPanel('joinPanel',4);setNavActive(this)">
-      <div class="bnav-icon">⚡</div>
-      <div class="bnav-label">JOIN</div>
+    <button class="bnav-btn" onclick="switchPanel('joinPanel',4);setNav(this)">
+      <div class="bnav-icon">⚡</div><div class="bnav-label">JOIN</div>
     </button>
   </div>
 
-</div><!-- /shell -->
+</div>
 
 <script>
-/* ── LIVE CLOCK ── */
-function updateTime(){
-  const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false});
-  document.getElementById('liveTime').textContent=t;
-}
-updateTime(); setInterval(updateTime,1000);
+/* ── DATA ── */
+const DL_DB = {
+  'KA01DL2024001':{name:'Arjun Krishnamurthy',dob:'15 Mar 1990',state:'Karnataka'},
+  'MH02DL2023045':{name:'Priya Nair',dob:'22 Jun 1988',state:'Maharashtra'},
+  'DL03DL2022078':{name:'Vikram Singh',dob:'08 Nov 1985',state:'Delhi'},
+  'TN04DL2021034':{name:'Sneha Ramesh',dob:'30 Jan 1992',state:'Tamil Nadu'},
+  'TS05DL2020056':{name:'Rahul Desai',dob:'14 Sep 1987',state:'Telangana'},
+  'KL06DL2019023':{name:'Meera Pillai',dob:'05 Apr 1993',state:'Kerala'},
+  'RJ07DL2018067':{name:'Rohit Sharma',dob:'11 Dec 1989',state:'Rajasthan'},
+};
+const STATE_MAP = {KA:'Karnataka',MH:'Maharashtra',DL:'Delhi',TN:'Tamil Nadu',TS:'Telangana',KL:'Kerala',RJ:'Rajasthan',UP:'Uttar Pradesh',GJ:'Gujarat',WB:'West Bengal',AP:'Andhra Pradesh',PB:'Punjab',HR:'Haryana',MP:'Madhya Pradesh',BR:'Bihar',OR:'Odisha'};
+const TAKEN_NAMES = ['GHOST','THUNDER','PHANTOM','SHADOW','DEMON','BEAST','IRON HORSE','VIPER','COBRA','HAWK','WOLF','TIGER','LION','PANTHER','FALCON'];
+const PINCODE_DB = {'560001':'Bengaluru, Karnataka','560034':'Bengaluru, Karnataka','560095':'Bengaluru, Karnataka','560068':'Bengaluru, Karnataka','400001':'Mumbai, Maharashtra','400050':'Mumbai, Maharashtra','400078':'Mumbai, Maharashtra','110001':'New Delhi, Delhi','110011':'New Delhi, Delhi','110092':'Noida, Uttar Pradesh','600001':'Chennai, Tamil Nadu','600017':'Chennai, Tamil Nadu','500001':'Hyderabad, Telangana','500034':'Hyderabad, Telangana','411001':'Pune, Maharashtra','411045':'Pune, Maharashtra','700001':'Kolkata, West Bengal','302001':'Jaipur, Rajasthan','380001':'Ahmedabad, Gujarat','530001':'Visakhapatnam, Andhra Pradesh','226001':'Lucknow, Uttar Pradesh','440001':'Nagpur, Maharashtra','160017':'Chandigarh, Punjab','682001':'Kochi, Kerala','641001':'Coimbatore, Tamil Nadu','580001':'Hubballi, Karnataka','580020':'Dharwad, Karnataka'};
+const BIKES = {'Royal Enfield':['Himalayan 450','Himalayan 411','Classic 350','Meteor 350','Hunter 350','Bullet 350','Interceptor 650','Continental GT 650','Bear 650'],'KTM':['Duke 125','Duke 200','Duke 390','Adventure 390','RC 390','Duke 890 R'],'Kawasaki':['Z400','Ninja 400','Z900','Ninja 650','Versys 650','Ninja 1000SX'],'Bajaj':['Pulsar NS200','Pulsar N250','Dominar 400','Dominar 250'],'Honda':['CB300R','Hornet 2.0','CB500X','CB650R','Africa Twin'],'Yamaha':['FZ-S V3','MT-15 V2','FZ-X','R15 V4','MT-07'],'Triumph':['Speed 400','Scrambler 400X','Tiger 660','Tiger 900','Speed Triple 1200'],'BMW':['G 310 R','G 310 GS','F 900 R','R 1250 GS'],'Harley-Davidson':['X440','Sportster S','Fat Bob 114','Road Glide'],'Hero':['Xpulse 200 4V','Xpulse 200T','Karizma XMR'],'TVS':['Apache RTR 200 4V','Apache RR 310','Ronin'],'Suzuki':['Gixxer SF 250','Hayabusa','V-Strom SX'],'Other':['Custom Build','Other Model']};
+const PERSONA_ICONS = {biker:'🏍️',tech:'💻',muscle:'💪'};
+const PERSONA_LABELS = {biker:'Biker',tech:'Tech',muscle:'Muscle'};
 
-/* ── MEMBER DB ── */
 const memberDB = [
   {num:'001',name:'Founder · 10 01',bike:'KTM 890 Duke R',city:'BENGALURU',role:'CHAIRMAN',chair:true},
   {num:'002',name:'Kiran Mehta',bike:'KTM Duke 390',city:'BENGALURU',role:'PACK MEMBER'},
@@ -1000,215 +839,347 @@ const memberDB = [
   {num:'007',name:'Meera Pillai',bike:'Honda CB500X',city:'HYDERABAD',role:'PACK MEMBER'},
 ];
 
-function initials(n){ return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)||'RD'; }
+/* ── STATE ── */
+const fd = {dlNumber:'',legalName:'',dob:'',dlState:'',phone:'',email:'',roadName:'',bikeBrand:'',bikeModel:'',pincode:'',city:'',persona:'',dreamSpace:'',bloodType:'',tier:'monthly'};
+let currentStep = 1;
+let roadCheckTimer = null;
+let cardFlipped = false;
 
-function renderMembers(list, newNum){
-  const el = document.getElementById('membersList');
-  el.innerHTML = list.map(m => {
-    const isCh = m.chair;
-    const isNew = newNum && m.num===newNum;
-    return `<div class="member-row${isCh?' chairman':''}${isNew?' new-arrival':''}" style="position:relative;">
+/* ── CLOCK ── */
+function updateTime(){const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false});document.getElementById('liveTime').textContent=t;}
+updateTime();setInterval(updateTime,1000);
+
+/* ── NAVIGATION ── */
+const PANELS = ['homePanel','packPanel','membershipPanel','ridesPanel','joinPanel'];
+function switchPanel(id,idx){
+  PANELS.forEach(p=>{document.getElementById(p).classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.bnav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+function setNav(btn){document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+
+/* ── MEMBERS ── */
+function initials(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)||'RD';}
+function renderMembers(list,newNum){
+  document.getElementById('membersList').innerHTML=list.map(m=>{
+    const isCh=m.chair,isNew=newNum&&m.num===newNum;
+    return `<div class="member-row${isCh?' chairman':''}">
       ${isNew?'<div style="position:absolute;inset:-2px;border:2px solid var(--gold);pointer-events:none;animation:ring-expand 1s ease-out forwards;"></div>':''}
       <div class="m-avatar">${isCh?'♛':initials(m.name)}</div>
       <div class="m-info">
-        <div class="m-badge-row">
-          ${isCh?'<span class="m-crown">♛</span>':''}
-          <div class="m-badge-text">${isCh?'CHAIRMAN · BBL-'+m.num:'SHAREHOLDER · BBL-'+m.num}</div>
-        </div>
+        <div class="m-badge-row"><div class="m-badge-text">${isCh?'CHAIRMAN · BBL-'+m.num:'MEMBER · BBL-'+m.num}</div></div>
         <div class="m-name">${m.name}</div>
         <div class="m-bike">${m.bike}</div>
       </div>
       <div class="m-city-tag">${m.city}</div>
     </div>`;
   }).join('');
-  document.getElementById('memberCountDash').textContent = String(list.length).padStart(3,'0');
-  document.getElementById('haPackCount').textContent = String(list.length).padStart(3,'0')+' RIDERS';
+  const count=String(list.length).padStart(3,'0');
+  document.getElementById('memberCountDash').textContent=count;
+  document.getElementById('haPackCount').textContent=count+' RIDERS';
+  document.getElementById('qs-members').textContent=list.length;
 }
 renderMembers(memberDB);
 
-/* ── PANEL SWITCHING ── */
-const panels = ['homePanel','packPanel','membershipPanel','ridesPanel','joinPanel'];
-function switchPanel(id, navIdx){
-  panels.forEach(p=>{
-    const el=document.getElementById(p);
-    el.classList.remove('active');
-  });
-  document.getElementById(id).classList.add('active');
-  // sync bottom nav
-  const btns = document.querySelectorAll('.bnav-btn');
-  btns.forEach((b,i)=>{b.classList.toggle('active',i===navIdx);});
-}
-function setNavActive(btn){
-  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
 /* ── BOOT ── */
 async function boot(){
-  const fill = document.getElementById('bootFill');
-  const status = document.getElementById('bootStatus');
-  const steps=[
-    {t:'INITIALIZING BBL CLUB OS ...',p:15},
-    {t:'LOADING MEMBER DATABASE ...',p:35},
-    {t:'CALIBRATING RIDE SYSTEMS ...',p:55},
-    {t:'CONNECTING TO PACK ...',p:75},
-    {t:'AUTHENTICATION OK ...',p:92},
-    {t:'SYSTEM READY ✓',p:100},
-  ];
-  for(const s of steps){
-    await delay(380);
-    status.textContent=s.t;
-    fill.style.width=s.p+'%';
-  }
+  const fill=document.getElementById('bootFill'),status=document.getElementById('bootStatus');
+  const steps=[{t:'INITIALIZING BBL CLUB OS ...',p:15},{t:'LOADING MEMBER DATABASE ...',p:35},{t:'CALIBRATING RIDE SYSTEMS ...',p:55},{t:'CONNECTING TO PACK ...',p:75},{t:'AUTHENTICATION OK ...',p:92},{t:'SYSTEM READY ✓',p:100}];
+  for(const s of steps){await delay(380);status.textContent=s.t;fill.style.width=s.p+'%';}
   await delay(400);
-  const bs = document.getElementById('bootScreen');
-  bs.style.transition='opacity 0.5s ease';
-  bs.style.opacity='0';
-  await delay(500);
-  bs.style.display='none';
-  const mc = document.getElementById('homePanel');
-  mc.classList.add('active');
+  const bs=document.getElementById('bootScreen');
+  bs.style.transition='opacity .5s ease';bs.style.opacity='0';
+  await delay(500);bs.style.display='none';
+  switchPanel('homePanel',0);
+  initBikeDropdown();
 }
 
-/* ── JOIN FLOW ── */
-async function startApplication(){
-  const name = document.getElementById('fn').value.trim()  || 'New Rider';
-  const bike = document.getElementById('fb').value.trim()  || 'Motorcycle';
-  const city = document.getElementById('fc').value         || 'India';
-  const tier = document.getElementById('ftier').value      || 'free';
-  const exp  = document.getElementById('fy').value         || 'Not specified';
-  const tierLabel = {free:'Visitor (Free)',member:'Pack Member',alpha:'Alpha Member ♛'}[tier]||tier;
+/* ── WIZARD STEP ── */
+const STEP_NAMES=['DRIVING LICENCE','PHONE · OTP','EMAIL ADDRESS','ROAD NAME','YOUR MACHINE','BASE LOCATION','PERSONA','DREAM SPACE','BLOOD TYPE','PLAN · PAYMENT'];
+function goToStep(n){
+  document.querySelectorAll('.join-step').forEach(el=>el.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  currentStep=n;
+  document.getElementById('wizProg').style.width=((n/10)*100)+'%';
+  document.getElementById('wizLabel').textContent='STEP '+n+' OF 10 · '+STEP_NAMES[n-1];
+  document.getElementById('joinPanel').scrollTop=0;
+}
 
-  document.getElementById('appForm').style.display='none';
-  const ea=document.getElementById('emulArea');
-  ea.classList.add('active');
+/* ── STEP 1: DL VERIFY ── */
+async function verifyDL(){
+  const val=document.getElementById('dlInput').value.toUpperCase().trim();
+  const errEl=document.getElementById('dlErr'),resEl=document.getElementById('dlResult');
+  errEl.classList.remove('show');resEl.classList.remove('show');
+  if(val.length<8){errEl.classList.add('show');return;}
+  const btn=document.querySelector('#step1 .btn-action');
+  btn.textContent='⟳ VERIFYING...';btn.disabled=true;
+  await delay(1600);
+  let data=DL_DB[val];
+  if(!data){
+    const sc=val.slice(0,2);
+    data={name:'Verified Rider',dob:'01 Jan 1990',state:STATE_MAP[sc]||'India'};
+  }
+  fd.dlNumber=val;fd.legalName=data.name;fd.dob=data.dob;fd.dlState=data.state;
+  resEl.textContent='✓ DL VERIFIED · '+data.name.toUpperCase()+' · '+data.dob+' · '+data.state.toUpperCase();
+  resEl.classList.add('show');
+  document.getElementById('dlNext').disabled=false;
+  btn.textContent='✓ VERIFIED';btn.style.background='rgba(57,255,20,.15)';btn.style.color='var(--green)';btn.style.border='1px solid rgba(57,255,20,.3)';
+}
 
-  const ml=document.getElementById('monoLog'), pf=document.getElementById('progFill');
+/* ── STEP 2: OTP ── */
+async function sendOTP(){
+  const phone=document.getElementById('phoneInput').value.trim();
+  if(phone.length<10){document.getElementById('phoneInput').classList.add('err');setTimeout(()=>document.getElementById('phoneInput').classList.remove('err'),600);return;}
+  fd.phone=phone;
+  const btn=document.getElementById('sendOtpBtn');
+  btn.textContent='⟳ SENDING...';btn.disabled=true;
+  await delay(1400);
+  btn.textContent='✓ OTP SENT';btn.style.background='rgba(57,255,20,.1)';btn.style.color='var(--green)';
+  document.getElementById('otpSection').style.display='block';
+  document.getElementById('o1').focus();
+}
+function otpAdvance(el,nextId){if(el.value&&nextId)document.getElementById(nextId).focus();checkOTPFull();}
+function otpBack(e,el,prevId){if(e.key==='Backspace'&&!el.value&&prevId)document.getElementById(prevId).focus();}
+function checkOTPFull(){const code=['o1','o2','o3','o4','o5','o6'].map(id=>document.getElementById(id).value).join('');if(code.length===6){setTimeout(()=>verifyOTP(),100);}}
+async function verifyOTP(){
+  const code=['o1','o2','o3','o4','o5','o6'].map(id=>document.getElementById(id).value).join('');
+  const errEl=document.getElementById('otpErr');
+  if(code==='111111'){errEl.classList.remove('show');fd.phone=document.getElementById('phoneInput').value;document.getElementById('otpNext').disabled=false;document.getElementById('otpNext').click();}
+  else{errEl.classList.add('show');['o1','o2','o3','o4','o5','o6'].forEach(id=>{const el=document.getElementById(id);el.classList.add('err');el.value='';setTimeout(()=>el.classList.remove('err'),600);});document.getElementById('o1').focus();}
+}
+
+/* ── STEP 3: EMAIL ── */
+function submitEmail(){
+  const val=document.getElementById('emailInput').value.trim();
+  const errEl=document.getElementById('emailErr');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)){errEl.classList.add('show');return;}
+  errEl.classList.remove('show');fd.email=val;goToStep(4);
+  document.getElementById('legalNameDisp').value=fd.legalName;
+}
+
+/* ── STEP 4: ROAD NAME ── */
+function checkRoadNameAvail(){
+  const val=document.getElementById('roadNameInput').value.toUpperCase().trim();
+  const okEl=document.getElementById('rnOk'),noEl=document.getElementById('rnNo'),chkEl=document.getElementById('rnChecking'),nxtBtn=document.getElementById('rnNext');
+  okEl.style.display='none';noEl.style.display='none';chkEl.style.display='none';nxtBtn.disabled=true;
+  if(val.length<3)return;
+  clearTimeout(roadCheckTimer);
+  chkEl.style.display='inline';
+  roadCheckTimer=setTimeout(async()=>{
+    await delay(700);
+    chkEl.style.display='none';
+    const existingRoadNames=memberDB.map(m=>m.name.toUpperCase());
+    const taken=TAKEN_NAMES.includes(val)||existingRoadNames.some(n=>n.includes(val));
+    if(taken){noEl.style.display='inline';}
+    else{okEl.style.display='inline';fd.roadName=val;nxtBtn.disabled=false;}
+  },400);
+}
+
+/* ── STEP 5: BIKES ── */
+function initBikeDropdown(){
+  const sel=document.getElementById('bikeBrand');
+  Object.keys(BIKES).forEach(brand=>{const o=document.createElement('option');o.value=brand;o.textContent=brand;sel.appendChild(o);});
+}
+function populateModels(){
+  const brand=document.getElementById('bikeBrand').value;
+  const modelSel=document.getElementById('bikeModel');
+  modelSel.innerHTML='<option value="" disabled selected>Select model</option>';
+  if(BIKES[brand])BIKES[brand].forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;modelSel.appendChild(o);});
+  modelSel.disabled=false;fd.bikeBrand=brand;
+  document.getElementById('bikeNext').disabled=false;
+  modelSel.onchange=()=>{fd.bikeModel=modelSel.value;};
+}
+function submitBike(){
+  fd.bikeBrand=document.getElementById('bikeBrand').value;
+  fd.bikeModel=document.getElementById('bikeModel').value||'';
+  if(!fd.bikeBrand){return;}
+  goToStep(6);
+}
+
+/* ── STEP 6: PINCODE ── */
+let pincodeTimer=null;
+function lookupPincode(){
+  const val=document.getElementById('pincodeInput').value.trim();
+  const resEl=document.getElementById('pincodeResult'),manualWrap=document.getElementById('cityManualWrap'),nxtBtn=document.getElementById('pincodeNext');
+  resEl.classList.remove('show');nxtBtn.disabled=true;manualWrap.style.display='none';
+  if(val.length!==6)return;
+  clearTimeout(pincodeTimer);
+  pincodeTimer=setTimeout(async()=>{
+    resEl.textContent='⟳ LOCATING...';resEl.classList.add('show');resEl.style.borderColor='rgba(255,212,64,.25)';resEl.style.color='rgba(255,212,64,.6)';
+    await delay(900);
+    const city=PINCODE_DB[val];
+    if(city){fd.pincode=val;fd.city=city;resEl.textContent='✓ '+city.toUpperCase();resEl.style.borderColor='rgba(39,201,63,.25)';resEl.style.color='var(--green)';nxtBtn.disabled=false;}
+    else{resEl.textContent='Pincode not found — enter city manually';resEl.style.borderColor='rgba(255,68,68,.25)';resEl.style.color='var(--red)';manualWrap.style.display='block';nxtBtn.disabled=false;}
+  },600);
+}
+function submitPincode(){
+  if(!fd.city&&document.getElementById('cityManual').value.trim()){fd.city=document.getElementById('cityManual').value.trim();}
+  if(!fd.city)return;
+  goToStep(7);
+}
+
+/* ── STEP 7: PERSONA ── */
+function selectPersona(type,el){
+  document.querySelectorAll('.persona-tile').forEach(t=>t.classList.remove('sel'));
+  el.classList.add('sel');fd.persona=type;
+  document.getElementById('personaNext').disabled=false;
+}
+
+/* ── STEP 8: DREAM SPACE ── */
+function submitDream(){
+  const val=document.getElementById('dreamInput').value.trim();
+  if(!val)return;
+  fd.dreamSpace=val;goToStep(9);
+}
+
+/* ── STEP 9: BLOOD TYPE ── */
+function submitBlood(){
+  const val=document.getElementById('bloodInput').value;
+  if(!val)return;
+  fd.bloodType=val;goToStep(10);
+}
+
+/* ── STEP 10: TIER + PAYMENT ── */
+function selectTier(type,el){
+  document.querySelectorAll('.ts-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');fd.tier=type;
+}
+async function startPayment(){
+  document.getElementById('tierSelectWrap').style.display='none';
+  const payArea=document.getElementById('paymentArea');payArea.classList.add('active');
+  const log=document.getElementById('payLog'),fill=document.getElementById('payFill');
+  const tierLabel=fd.tier==='annual'?'Pack Member · ₹1,001/yr':'Pack Member · ₹101/mo';
   const steps=[
-    {t:'[INIT] &nbsp;&nbsp;Connecting to BBL Secretariat...', p:12},
-    {t:'[SCAN] &nbsp;&nbsp;Verifying rider license...',       p:26},
-    {t:'[DOCS] &nbsp;&nbsp;Running documentation checks...',  p:41},
-    {t:`[TIER] &nbsp;&nbsp;Processing ${tierLabel} tier...`,  p:58},
-    {t:'[PAY] &nbsp;&nbsp;&nbsp;Initiating membership fee...', p:75},
-    {t:'[CRED] &nbsp;&nbsp;Generating secure credentials...',  p:90},
-    {t:'[✓] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPLICATION APPROVED',p:100},
+    {t:'[INIT] &nbsp;&nbsp;Connecting to BBL Secretariat...',p:10},
+    {t:'[DL] &nbsp;&nbsp;&nbsp;DL verified · '+fd.legalName.toUpperCase(),p:22},
+    {t:'[AUTH] &nbsp;&nbsp;Phone authentication confirmed...',p:35},
+    {t:'[TIER] &nbsp;&nbsp;Processing '+tierLabel+'...',p:50},
+    {t:'[PAY] &nbsp;&nbsp;&nbsp;Payment gateway connected...',p:65},
+    {t:'[PAY] &nbsp;&nbsp;&nbsp;Transaction processing...',p:78},
+    {t:'[CRED] &nbsp;&nbsp;Generating member credentials...',p:90},
+    {t:'[CARD] &nbsp;&nbsp;Minting member card...',p:96},
+    {t:'[✓] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MEMBERSHIP ACTIVATED',p:100},
   ];
   for(let i=0;i<steps.length;i++){
-    await delay(900);
-    const done=i===steps.length-1;
-    ml.innerHTML+=`<div class="log-line${done?' log-done':''}">${steps[i].t}</div>`;
-    pf.style.width=steps[i].p+'%';
-    ml.scrollTop=ml.scrollHeight;
+    await delay(800);const done=i===steps.length-1;
+    log.innerHTML+=`<div class="log-line${done?' log-done':''}">${steps[i].t}</div>`;
+    fill.style.width=steps[i].p+'%';log.scrollTop=log.scrollHeight;
   }
-
   const newNum=String(memberDB.length+1).padStart(3,'0');
-  await goldBiscuit(name,bike,city,newNum);
-
-  memberDB.push({num:newNum,name,bike,city:city.toUpperCase(),role:tierLabel});
+  await goldBiscuit(fd.legalName,fd.bikeBrand+' '+fd.bikeModel,fd.city,newNum);
+  fd.memberNum=newNum;
+  memberDB.push({num:newNum,name:fd.roadName||fd.legalName,bike:fd.bikeBrand+(fd.bikeModel?' '+fd.bikeModel:''),city:(fd.city.split(',')[0]||fd.city).toUpperCase(),role:tierLabel});
   renderMembers(memberDB,newNum);
+  await delay(400);
+  revealMemberCard(newNum,tierLabel);
+  await delay(800);
+  await runCommunicator(fd.roadName||fd.legalName,newNum);
+}
 
-  const waMsg=encodeURIComponent(`♛ BBL MEMBERSHIP APPLICATION\n\nMember No : BBL-${newNum}\nName      : ${name}\nMotorcycle: ${bike}\nCity      : ${city}\nTier      : ${tierLabel}\nExperience: ${exp}\n\nI'd like to connect with the Founder.`);
+/* ── CREDIT CARD ── */
+function revealMemberCard(num,tierLabel){
+  let isFlipped=false;
+  const personaIcon=PERSONA_ICONS[fd.persona]||'🏍️';
+  const bikeDisplay=(fd.bikeBrand+(fd.bikeModel?' '+fd.bikeModel:'')).trim()||'Motorcycle';
+  const cityDisplay=(fd.city.split(',')[0]||fd.city)||'India';
+  const waMsg=encodeURIComponent(`♛ BBL MEMBERSHIP APPLICATION\n\nMember No : BBL-${num}\nName      : ${fd.legalName}\nRoad Name : ${fd.roadName}\nMotorcycle: ${bikeDisplay}\nCity      : ${fd.city}\nPersona   : ${PERSONA_LABELS[fd.persona]||'Biker'}\nTier      : ${tierLabel}\n\nI'd like to connect with the Founder.`);
   const waLink=`https://wa.me/916292306090?text=${waMsg}`;
 
   document.getElementById('cardReveal').innerHTML=`
-    <div class="card-reveal-mob">
-      <div class="cr-num-mob gold-foil">MEMBER · BBL-${newNum} · ${tierLabel.toUpperCase()}</div>
-      <div class="cr-name-mob">${name}</div>
-      <div class="cr-bike-mob">${bike} · ${city}</div>
-      <div class="cr-seal-mob gold-foil">BHRATHA BIKING LIMITED</div>
-      <div class="cr-tag-mob">Driven · Disciplined · Destined</div>
-      <a class="btn-founder-mob gold-foil-bg" href="${waLink}" target="_blank" rel="noopener">♛ CONNECT WITH FOUNDER</a>
-    </div>`;
+    <div class="mc-wrap">
+      <div class="mc-card" id="mc-card-el">
+        <div class="mc-header">
+          <div class="mc-persona-icon">${personaIcon}</div>
+          <div class="mc-center">
+            <div class="mc-road-name" id="mc-rn">${fd.roadName||fd.legalName.toUpperCase()}</div>
+            <div class="mc-road-sub" id="mc-rn-sub">tap · reveal identity</div>
+          </div>
+          <div class="mc-right">
+            <div class="mc-bbl">BBL</div>
+            <div class="mc-blood">${fd.bloodType||'??'}</div>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-field">
+            <div class="mc-fl">MACHINE</div>
+            <div class="mc-fv">${bikeDisplay}</div>
+          </div>
+          <div class="mc-field">
+            <div class="mc-fl">BASED AT</div>
+            <div class="mc-fv">${cityDisplay}</div>
+          </div>
+          <div class="mc-field">
+            <div class="mc-fl">DREAM SPACE</div>
+            <div class="mc-fv">${fd.dreamSpace||'—'}</div>
+          </div>
+        </div>
+        <div class="mc-footer">
+          <div class="mc-tier-num">PACK MEMBER · BBL-${num}</div>
+          <div class="mc-tagline">DRIVEN · DISCIPLINED · DESTINED</div>
+        </div>
+      </div>
+      <div class="mc-tap-hint">⟳ TAP CARD TO TOGGLE IDENTITY</div>
+    </div>
+    <a style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:13px;text-decoration:none;font-family:var(--f-d);font-size:1.1rem;letter-spacing:3px;color:#050500;transition:all .2s;border-radius:0" class="gold-foil-bg" href="${waLink}" target="_blank" rel="noopener">♛ CONNECT WITH FOUNDER</a>
+  `;
+  document.getElementById('cardReveal').style.display='block';
 
-  await delay(700);
-  await runCommunicator(name, newNum);
+  document.getElementById('mc-card-el').addEventListener('click',()=>{
+    isFlipped=!isFlipped;
+    const rnEl=document.getElementById('mc-rn'),subEl=document.getElementById('mc-rn-sub');
+    if(isFlipped){rnEl.textContent=fd.legalName.toUpperCase();rnEl.style.color='var(--gold)';subEl.textContent=`Road name: ${fd.roadName} · ${fd.dlState}`;}
+    else{rnEl.textContent=fd.roadName||fd.legalName.toUpperCase();rnEl.style.color='#F5F0E0';subEl.textContent='tap · reveal identity';}
+  });
 }
 
 /* ── PACK COMMUNICATOR ── */
-async function runCommunicator(newName, newNum){
+async function runCommunicator(riderName,newNum){
   const script=[
-    {from:'001',name:'10 01',    text:'BBL Secretariat online. Welcome to the pack.',               d:900},
-    {from:'002',name:'Kiran M',  text:'Kiran here — KTM Duke 390, Bengaluru. Ride with us soon!',  d:1200},
-    {from:'003',name:'Priya N',  text:'Mumbai chapter online. Z900 on standby 🤝',                  d:1000},
-    {from:null, name:newName,    text:'Honoured to be part of BBL. Ready to ride.', out:true,       d:900},
-    {from:'004',name:'Arjun R',  text:'Delhi GS rider here. Deccan Dawn Patrol awaits you.',        d:1300},
-    {from:null, name:newName,    text:'See you all on the road. Driven. Disciplined. Destined.',out:true,d:900},
-    {from:'005',name:'Sneha S',  text:'Chennai pack says welcome. Coastal run is calling.',         d:1100},
+    {from:'001',name:'10 01',text:'BBL Secretariat online. Welcome to the pack, '+riderName+'.',d:900},
+    {from:'002',name:'Kiran M',text:'Kiran here — KTM Duke 390, Bengaluru. Ride with us soon!',d:1200},
+    {from:'003',name:'Priya N',text:'Mumbai chapter online. Z900 on standby 🤝',d:1000},
+    {from:null,name:riderName,text:'Honoured to be part of BBL. Ready to ride.',out:true,d:900},
+    {from:'004',name:'Arjun R',text:'Delhi GS rider here. Deccan Dawn Patrol awaits.',d:1300},
+    {from:null,name:riderName,text:'See you all on the road. Driven. Disciplined. Destined.',out:true,d:900},
+    {from:'005',name:'Sneha S',text:'Chennai pack says welcome. Coastal run is calling.',d:1100},
   ];
-
   const shell=document.createElement('div');
   shell.className='communicator-mob';
-  shell.innerHTML=`
-    <div class="comm-hdr-mob">
-      <div class="comm-dot-mob"></div>
-      <div class="comm-title-mob">PACK COMMUNICATOR — BBL-${newNum}</div>
-      <div class="comm-status-mob" id="commStatus">LIVE</div>
-    </div>
-    <div class="comm-body-mob" id="commBody"></div>
-    <div class="comm-footer-mob" id="commFooter">// bbl-secure-channel · encrypting</div>`;
+  shell.innerHTML=`<div class="comm-hdr-mob"><div class="comm-dot-mob"></div><div class="comm-title-mob">PACK COMMUNICATOR — BBL-${newNum}</div><div class="comm-status-mob" id="commSt">LIVE</div></div><div class="comm-body-mob" id="commBody"></div><div class="comm-footer-mob" id="commFt">// bbl-secure-channel · encrypting</div>`;
   document.getElementById('cardReveal').appendChild(shell);
   shell.scrollIntoView({behavior:'smooth',block:'nearest'});
-
   const body=document.getElementById('commBody');
-
   for(const msg of script){
     await delay(msg.d);
     if(!msg.out){
-      const typing=document.createElement('div');
-      typing.className='typing-mob';
+      const typing=document.createElement('div');typing.className='typing-mob';
       typing.innerHTML=`<div class="chat-av">${initials(msg.name)}</div><div class="typing-dots-mob"><span></span><span></span><span></span></div>`;
-      body.appendChild(typing); body.scrollTop=body.scrollHeight;
-      await delay(Math.min(msg.text.length*22,1200));
-      typing.remove();
+      body.appendChild(typing);body.scrollTop=body.scrollHeight;
+      await delay(Math.min(msg.text.length*22,1200));typing.remove();
     }
-    const row=document.createElement('div');
-    row.className=`chat-msg-mob${msg.out?' out':''}`;
-    const av=msg.out?initials(newName):initials(msg.name);
+    const row=document.createElement('div');row.className=`chat-msg-mob${msg.out?' out':''}`;
+    const av=msg.out?initials(riderName):initials(msg.name);
     const ts=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
-    row.innerHTML=`
-      <div class="chat-av${msg.out?' me':''}">${av}</div>
-      <div class="chat-bub">
-        <div class="chat-snd">${msg.out?'YOU — BBL-'+newNum:msg.name+' · BBL-'+msg.from}</div>
-        <div class="chat-txt">${msg.text}</div>
-        <div class="chat-ts">${ts}</div>
-      </div>`;
-    body.appendChild(row); body.scrollTop=body.scrollHeight;
+    row.innerHTML=`<div class="chat-av${msg.out?' me':''}">${av}</div><div class="chat-bub"><div class="chat-snd">${msg.out?'YOU — BBL-'+newNum:msg.name+' · BBL-'+msg.from}</div><div class="chat-txt">${msg.text}</div><div class="chat-ts">${ts}</div></div>`;
+    body.appendChild(row);body.scrollTop=body.scrollHeight;
   }
-  document.getElementById('commStatus').textContent='ALL ONLINE';
-  document.getElementById('commFooter').textContent=`// ${memberDB.length} shareholders active · bbl-secure`;
+  document.getElementById('commSt').textContent='ALL ONLINE';
+  document.getElementById('commFt').textContent=`// ${memberDB.length} riders active · bbl-secure`;
 }
 
 /* ── GOLD BISCUIT ── */
 async function goldBiscuit(name,bike,city,num){
-  const flash=document.getElementById('goldFlash'), overlay=document.getElementById('stampOverlay');
-  document.getElementById('scNum').textContent=`BBL-${num}`;
-  document.getElementById('scName').textContent=name;
-  document.getElementById('scBike').textContent=`${bike} · ${city}`;
-  flash.classList.add('active');    await delay(130);
-  flash.classList.remove('active'); await delay(60);
-  flash.classList.add('active');    await delay(100);
-  flash.classList.remove('active'); await delay(50);
-  overlay.classList.remove('fly-away');
-  overlay.classList.add('active');
-  await delay(160);
-  // horn beep
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const osc=ctx.createOscillator();const g=ctx.createGain();
-    osc.connect(g);g.connect(ctx.destination);
-    osc.frequency.value=880;g.gain.setValueAtTime(0.15,ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.8);
-    osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.8);
-  }catch(e){}
-  await delay(1600);
-  overlay.classList.add('fly-away');
-  await delay(720);
-  overlay.classList.remove('active','fly-away');
+  const flash=document.getElementById('goldFlash'),overlay=document.getElementById('stampOverlay');
+  document.getElementById('scNum').textContent='BBL-'+num;
+  document.getElementById('scName').textContent=fd.roadName||name;
+  document.getElementById('scBike').textContent=bike+' · '+(city.split(',')[0]||city);
+  flash.classList.add('active');await delay(130);flash.classList.remove('active');await delay(60);flash.classList.add('active');await delay(100);flash.classList.remove('active');await delay(50);
+  overlay.classList.remove('fly-away');overlay.classList.add('active');await delay(160);
+  try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const osc=ctx.createOscillator();const g=ctx.createGain();osc.connect(g);g.connect(ctx.destination);osc.frequency.value=880;g.gain.setValueAtTime(.12,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.8);osc.start();osc.stop(ctx.currentTime+.8);}catch(e){}
+  await delay(1600);overlay.classList.add('fly-away');await delay(720);overlay.classList.remove('active','fly-away');
 }
 
-function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
-
-/* ── KICKOFF ── */
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
 window.addEventListener('load',()=>boot());
 </script>
 </body>
